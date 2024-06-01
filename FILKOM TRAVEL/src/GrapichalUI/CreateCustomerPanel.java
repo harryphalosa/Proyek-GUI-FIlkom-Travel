@@ -29,5 +29,6 @@ public class CreateCustomerPanel extends JPanel {
 
         formPanel.add(submitButton);
         add(formPanel, BorderLayout.CENTER);
+        formPanel.setVisible(true);
     }
 }

@@ -33,5 +33,6 @@ public class CreatePromoPanel extends JPanel {
 
         formPanel.add(submitButton);
         add(formPanel, BorderLayout.CENTER);
+        formPanel.setVisible(true);
     }
 }

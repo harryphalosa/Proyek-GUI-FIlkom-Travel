@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class WelcomePanel extends ImagePanel {
     public WelcomePanel(MainWindow mainWindow) {
-        super("/GrapichalUI/SourcePicture/1-6.jpg"); // Pastikan path ke gambar benar
+        super("/GrapichalUI/SourcePicture/LOGOFILKOM.jpg"); // Pastikan path ke gambar benar
 
         setLayout(new BorderLayout());
 

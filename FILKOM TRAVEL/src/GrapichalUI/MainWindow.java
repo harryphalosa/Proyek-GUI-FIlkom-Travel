@@ -17,6 +17,7 @@ public class MainWindow extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         // Add panels
+        mainPanel.add(new WelcomePanel(this), "WelcomePanel");
         mainPanel.add(new StartPanel(this), "StartPanel");
         mainPanel.add(new CreateCustomerPanel(this), "CreateCustomerPanel");
         mainPanel.add(new CreateMenuPanel(this), "CreateMenuPanel");
@@ -24,7 +25,7 @@ public class MainWindow extends JFrame {
         mainPanel.add(new TopUpPanel(this), "TopUpPanel");
 
         add(mainPanel);
-        cardLayout.show(mainPanel, "StartPanel");
+        cardLayout.show(mainPanel, "WelcomePanel");
     }
 
     public void showPanel(String panelName) {

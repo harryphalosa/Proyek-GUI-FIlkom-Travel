@@ -27,6 +27,6 @@ public class CreateMenuPanel extends JPanel {
 
         formPanel.add(submitButton);
         add(formPanel, BorderLayout.CENTER);
-        formPanel.setVisible(true);
+        formPanel.setVisible(true); 
     }
 }

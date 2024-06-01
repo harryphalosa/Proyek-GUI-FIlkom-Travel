@@ -16,7 +16,7 @@ public class MainWindow extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Add panels
+        // Menambahkan panel
         mainPanel.add(new WelcomePanel(this), "WelcomePanel");
         mainPanel.add(new StartPanel(this), "StartPanel");
         mainPanel.add(new CreateCustomerPanel(this), "CreateCustomerPanel");

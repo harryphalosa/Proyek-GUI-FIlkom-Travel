@@ -2,14 +2,20 @@ package GrapichalUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ImagePanel extends JPanel {
     private Image backgroundImage;
 
     public ImagePanel(String fileName) {
         try {
-            // Load the image from the sourcepicture folder
-            backgroundImage = new ImageIcon(getClass().getResource("/sourcepicture/" + fileName)).getImage();
+            // Memuat gambar menggunakan class loader
+            URL imageUrl = getClass().getResource(fileName);
+            if (imageUrl == null) {
+                System.out.println("Gambar tidak ditemukan: " + fileName);
+            } else {
+                backgroundImage = new ImageIcon(imageUrl).getImage();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

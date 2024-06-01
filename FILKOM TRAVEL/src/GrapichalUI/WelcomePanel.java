@@ -7,13 +7,13 @@ import java.awt.event.ActionListener;
 
 public class WelcomePanel extends ImagePanel {
     public WelcomePanel(MainWindow mainWindow) {
-        super("background.jpg"); // Just specify the image file name
+        super("/GrapichalUI/SourcePicture/1-6.jpg"); // Pastikan path ke gambar benar
 
         setLayout(new BorderLayout());
 
         JLabel welcomeLabel = new JLabel("FILKOM TRAVEL", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        welcomeLabel.setForeground(Color.WHITE); // Set the text color to be visible on the background
+        welcomeLabel.setForeground(Color.BLACK); // Warna teks agar terlihat pada background
         add(welcomeLabel, BorderLayout.CENTER);
 
         JButton startButton = new JButton("Start");

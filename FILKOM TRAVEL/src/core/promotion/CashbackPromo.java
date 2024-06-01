@@ -1,12 +1,10 @@
 package core.promotion;
 
-import core.Order;
-
-
 import java.time.LocalDate;
 
 public class CashbackPromo extends Promotion {
-    public CashbackPromo(String promoCode, LocalDate startDate, LocalDate endDate, int percentOff, int maxDiscount,int minPurchase){
+    public CashbackPromo(String promoCode, LocalDate startDate, LocalDate endDate, int percentOff, int maxDiscount,
+            int minPurchase) {
         super(promoCode, startDate, endDate, percentOff, maxDiscount, minPurchase);
     }
 }

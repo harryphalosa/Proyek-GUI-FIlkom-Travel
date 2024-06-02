@@ -1,6 +1,7 @@
 package GrapichalUI;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,10 +35,10 @@ public class FilkomTravel extends JFrame {
     public FilkomTravel() {
         frame = this;
         setTitle("Filkom Travel");
-        setSize(600, 600);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(null);
+        setLayout(new CardLayout());
 
         // Initialize all panels and add them to the frame
         initializeMainPanel();
@@ -56,756 +57,809 @@ public class FilkomTravel extends JFrame {
         initializePanelCetak();
         initializePanelPrintHistory();
 
-        add(mainPanel);
-        add(panel1);
-        add(panelCreateMember);
-        add(panelCreateGuest);
-        add(panel2);
-        add(panelTopUp);
-        add(panelCreatePromo);
-        add(panelCreateMenu);
-        add(panel3);
-        add(panelApplyPromo);
-        add(panelAddToCart);
-        add(panelRemoveFromCart);
-        add(panelCheckOut);
-        add(panelCetak);
-        add(panelPrintHistory);
+        add(mainPanel, "MainPanel");
+        add(panel1, "Panel1");
+        add(panelCreateMember, "PanelCreateMember");
+        add(panelCreateGuest, "PanelCreateGuest");
+        add(panel2, "Panel2");
+        add(panelTopUp, "PanelTopUp");
+        add(panelCreatePromo, "PanelCreatePromo");
+        add(panelCreateMenu, "PanelCreateMenu");
+        add(panel3, "Panel3");
+        add(panelApplyPromo, "PanelApplyPromo");
+        add(panelAddToCart, "PanelAddToCart");
+        add(panelRemoveFromCart, "PanelRemoveFromCart");
+        add(panelCheckOut, "PanelCheckOut");
+        add(panelCetak, "PanelCetak");
+        add(panelPrintHistory, "PanelPrintHistory");
 
         // Show the main panel first
-        switchPanel(mainPanel);
+        CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+        cardLayout.show(getContentPane(), "MainPanel");
     }
 
     private void initializeMainPanel() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(null);
-        mainPanel.setBounds(0, 0, 600, 400);
+        mainPanel.setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Filkom Travel");
-        title.setBounds(250, 50, 100, 30);
-        mainPanel.add(title);
+        JLabel title = new JLabel("Filkom Travel", SwingConstants.CENTER);
+        mainPanel.add(title, BorderLayout.NORTH);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton startButton = new JButton("Start");
-        startButton.setBounds(250, 150, 100, 30);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel1);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        mainPanel.add(startButton);
+        centerPanel.add(startButton);
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
     }
 
     private void initializePanel1() {
         panel1 = new JPanel();
-        panel1.setLayout(null);
-        panel1.setBounds(0, 0, 600, 400);
+        panel1.setLayout(new BorderLayout());
 
-        JLabel panel1Label = new JLabel("Panel 1");
-        panel1Label.setBounds(250, 20, 100, 30);
-        panel1.add(panel1Label);
+        JPanel centerPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-        JButton createMemberButton = new JButton("Create Member");
-        createMemberButton.setBounds(50, 300, 150, 30);
-        createMemberButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCreateMember);
-            }
-        });
-        panel1.add(createMemberButton);
+        JLabel guestLabel = new JLabel("Guest List", SwingConstants.CENTER);
+        JList<String> guestList = new JList<>(new String[] { "Guest 1", "Guest 2", "Guest 3" });
+        JScrollPane guestScrollPane = new JScrollPane(guestList);
 
+        JLabel memberLabel = new JLabel("Member List", SwingConstants.CENTER);
+        JList<String> memberList = new JList<>(new String[] { "Member 1", "Member 2", "Member 3" });
+        JScrollPane memberScrollPane = new JScrollPane(memberList);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(guestLabel)
+                        .addComponent(guestScrollPane)
+                        .addComponent(memberLabel)
+                        .addComponent(memberScrollPane)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(guestLabel)
+                .addComponent(guestScrollPane)
+                .addComponent(memberLabel)
+                .addComponent(memberScrollPane));
+
+        panel1.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton createGuestButton = new JButton("Create Guest");
-        createGuestButton.setBounds(220, 300, 150, 30);
+        createGuestButton.setSize(50, 20);
         createGuestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCreateGuest);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreateGuest");
             }
         });
-        panel1.add(createGuestButton);
+        bottomPanel.add(createGuestButton);
+
+        JButton createMemberButton = new JButton("Create Member");
+        createMemberButton.setSize(50, 20);
+        createMemberButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreateMember");
+            }
+        });
+        bottomPanel.add(createMemberButton);
 
         JButton nextButton = new JButton("Next");
-        nextButton.setBounds(390, 300, 150, 30);
+        nextButton.setSize(50, 20);
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
-        panel1.add(nextButton);
 
-        JList<String> guestList = new JList<>(new String[] { "Guest 1", "Guest 2", "Guest 3" });
-        JScrollPane guestScrollPane = new JScrollPane(guestList);
-        guestScrollPane.setBounds(50, 50, 200, 200);
-        panel1.add(guestScrollPane);
-
-        JList<String> memberList = new JList<>(new String[] { "Member 1", "Member 2", "Member 3" });
-        JScrollPane memberScrollPane = new JScrollPane(memberList);
-        memberScrollPane.setBounds(300, 50, 200, 200);
-        panel1.add(memberScrollPane);
+        bottomPanel.add(nextButton);
+        panel1.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCreateMember() {
         panelCreateMember = new JPanel();
-        panelCreateMember.setLayout(null);
-        panelCreateMember.setBounds(0, 0, 600, 400);
+        panelCreateMember.setLayout(new BorderLayout());
 
-        JLabel panelCreateMemberLabel = new JLabel("Panel Create Member");
-        panelCreateMemberLabel.setBounds(200, 20, 200, 30);
-        panelCreateMember.add(panelCreateMemberLabel);
+        JPanel centerPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idLabel = new JLabel("ID:");
-        idLabel.setBounds(50, 70, 100, 30);
-        panelCreateMember.add(idLabel);
-
         JTextField idField = new JTextField();
-        idField.setBounds(200, 70, 300, 30);
-        panelCreateMember.add(idField);
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        JLabel emailLabel = new JLabel("Email:");
+        JTextField emailField = new JTextField();
+        JLabel phoneLabel = new JLabel("Phone:");
+        JTextField phoneField = new JTextField();
 
-        JLabel namaLabel = new JLabel("Nama:");
-        namaLabel.setBounds(50, 110, 100, 30);
-        panelCreateMember.add(namaLabel);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(idLabel)
+                        .addComponent(nameLabel)
+                        .addComponent(emailLabel)
+                        .addComponent(phoneLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idField)
+                        .addComponent(nameField)
+                        .addComponent(emailField)
+                        .addComponent(phoneField)));
 
-        JTextField namaField = new JTextField();
-        namaField.setBounds(200, 110, 300, 30);
-        panelCreateMember.add(namaField);
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idLabel)
+                        .addComponent(idField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(nameLabel)
+                        .addComponent(nameField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(emailLabel)
+                        .addComponent(emailField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(phoneLabel)
+                        .addComponent(phoneField)));
 
-        JLabel tanggalLabel = new JLabel("Tanggal Daftar:");
-        tanggalLabel.setBounds(50, 150, 100, 30);
-        panelCreateMember.add(tanggalLabel);
+        panelCreateMember.add(centerPanel, BorderLayout.CENTER);
 
-        JComboBox<String> tanggalComboBox = new JComboBox<>(getDates());
-        tanggalComboBox.setBounds(200, 150, 80, 30);
-        panelCreateMember.add(tanggalComboBox);
-
-        JComboBox<String> bulanComboBox = new JComboBox<>(getMonths());
-        bulanComboBox.setBounds(290, 150, 80, 30);
-        panelCreateMember.add(bulanComboBox);
-
-        JComboBox<String> tahunComboBox = new JComboBox<>(getYears());
-        tahunComboBox.setBounds(380, 150, 120, 30);
-        panelCreateMember.add(tahunComboBox);
-
-        JLabel saldoLabel = new JLabel("Saldo Awal:");
-        saldoLabel.setBounds(50, 190, 100, 30);
-        panelCreateMember.add(saldoLabel);
-
-        JTextField saldoField = new JTextField();
-        saldoField.setBounds(200, 190, 300, 30);
-        panelCreateMember.add(saldoField);
-
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 250, 100, 30);
-        panelCreateMember.add(simpanButton);
-
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 250, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel1);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        panelCreateMember.add(backButton);
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for creating member
+            }
+        });
+        bottomPanel.add(backButton);
+        bottomPanel.add(createButton);
+        panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCreateGuest() {
         panelCreateGuest = new JPanel();
-        panelCreateGuest.setLayout(null);
-        panelCreateGuest.setBounds(0, 0, 600, 400);
+        panelCreateGuest.setLayout(new BorderLayout());
 
-        JLabel panelCreateGuestLabel = new JLabel("Panel Create Guest");
-        panelCreateGuestLabel.setBounds(200, 20, 200, 30);
-        panelCreateGuest.add(panelCreateGuestLabel);
+        JPanel centerPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idLabel = new JLabel("ID:");
-        idLabel.setBounds(50, 70, 100, 30);
-        panelCreateGuest.add(idLabel);
-
         JTextField idField = new JTextField();
-        idField.setBounds(200, 70, 300, 30);
-        panelCreateGuest.add(idField);
-
         JLabel saldoLabel = new JLabel("Saldo Awal:");
-        saldoLabel.setBounds(50, 110, 100, 30);
-        panelCreateGuest.add(saldoLabel);
-
         JTextField saldoField = new JTextField();
-        saldoField.setBounds(200, 110, 300, 30);
-        panelCreateGuest.add(saldoField);
 
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 170, 100, 30);
-        panelCreateGuest.add(simpanButton);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(idLabel)
+                        .addComponent(saldoLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idField)
+                        .addComponent(saldoField)));
 
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idLabel)
+                        .addComponent(idField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(saldoLabel)
+                        .addComponent(saldoField)));
+
+        panelCreateGuest.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 170, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel1);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        panelCreateGuest.add(backButton);
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for creating guest
+            }
+        });
+        bottomPanel.add(backButton);
+        bottomPanel.add(createButton);
+        panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanel2() {
         panel2 = new JPanel();
-        panel2.setLayout(null);
-        panel2.setBounds(0, 0, 600, 400);
+        panel2.setLayout(new BorderLayout());
 
-        JLabel panel2Label = new JLabel("Panel 2");
-        panel2Label.setBounds(250, 20, 100, 30);
-        panel2.add(panel2Label);
+        JLabel panel2Label = new JLabel("Panel 2", SwingConstants.CENTER);
+        panel2.add(panel2Label, BorderLayout.NORTH);
 
-        JList<String> promoList = new JList<>(new String[] { "Promo 1", "Promo 2", "Promo 3" });
-        JScrollPane promoScrollPane = new JScrollPane(promoList);
-        promoScrollPane.setBounds(50, 50, 200, 200);
-        panel2.add(promoScrollPane);
-
-        JList<String> menuList = new JList<>(new String[] { "Menu 1", "Menu 2", "Menu 3" });
-        JScrollPane menuScrollPane = new JScrollPane(menuList);
-        menuScrollPane.setBounds(300, 50, 200, 200);
-        panel2.add(menuScrollPane);
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton topUpButton = new JButton("Top Up");
-        topUpButton.setBounds(50, 300, 100, 30);
         topUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelTopUp);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelTopUp");
             }
         });
-        panel2.add(topUpButton);
+        centerPanel.add(topUpButton);
 
         JButton createPromoButton = new JButton("Create Promo");
-        createPromoButton.setBounds(170, 300, 120, 30);
         createPromoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCreatePromo);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreatePromo");
             }
         });
-        panel2.add(createPromoButton);
+        centerPanel.add(createPromoButton);
 
         JButton createMenuButton = new JButton("Create Menu");
-        createMenuButton.setBounds(310, 300, 120, 30);
         createMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCreateMenu);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreateMenu");
             }
         });
-        panel2.add(createMenuButton);
+        centerPanel.add(createMenuButton);
 
+        panel2.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton backButton = new JButton("Back");
-        backButton.setBounds(50, 350, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel1);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        panel2.add(backButton);
-
         JButton nextButton = new JButton("Next");
-        nextButton.setBounds(470, 350, 100, 30);
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel3);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel3");
             }
         });
-        panel2.add(nextButton);
+        bottomPanel.add(backButton);
+        bottomPanel.add(nextButton);
+        panel2.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelTopUp() {
         panelTopUp = new JPanel();
-        panelTopUp.setLayout(null);
-        panelTopUp.setBounds(0, 0, 600, 400);
+        panelTopUp.setLayout(new BorderLayout());
 
-        JLabel panelTopUpLabel = new JLabel("Panel Top Up");
-        panelTopUpLabel.setBounds(250, 20, 100, 30);
-        panelTopUp.add(panelTopUpLabel);
+        JLabel panelTopUpLabel = new JLabel("Panel Top Up", SwingConstants.CENTER);
+        panelTopUp.add(panelTopUpLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 2));
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        idPemesanLabel.setBounds(50, 70, 100, 30);
-        panelTopUp.add(idPemesanLabel);
-
         JTextField idPemesanField = new JTextField();
-        idPemesanField.setBounds(200, 70, 300, 30);
-        panelTopUp.add(idPemesanField);
-
         JLabel nominalTopUpLabel = new JLabel("Nominal Top Up:");
-        nominalTopUpLabel.setBounds(50, 110, 100, 30);
-        panelTopUp.add(nominalTopUpLabel);
-
         JTextField nominalTopUpField = new JTextField();
-        nominalTopUpField.setBounds(200, 110, 300, 30);
-        panelTopUp.add(nominalTopUpField);
 
+        centerPanel.add(idPemesanLabel);
+        centerPanel.add(idPemesanField);
+        centerPanel.add(nominalTopUpLabel);
+        centerPanel.add(nominalTopUpField);
+
+        panelTopUp.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 170, 100, 30);
-        panelTopUp.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for saving top-up information
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 170, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
-        panelTopUp.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelTopUp.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCreatePromo() {
         panelCreatePromo = new JPanel();
-        panelCreatePromo.setLayout(null);
-        panelCreatePromo.setBounds(0, 0, 600, 400);
+        panelCreatePromo.setLayout(new BorderLayout());
 
-        JLabel panelCreatePromoLabel = new JLabel("Panel Create Promo");
-        panelCreatePromoLabel.setBounds(200, 20, 200, 30);
-        panelCreatePromo.add(panelCreatePromoLabel);
+        JLabel panelCreatePromoLabel = new JLabel("Panel Create Promo", SwingConstants.CENTER);
+        panelCreatePromo.add(panelCreatePromoLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(5, 2));
 
         JLabel jenisPromoLabel = new JLabel("Jenis Promo:");
-        jenisPromoLabel.setBounds(50, 70, 100, 30);
-        panelCreatePromo.add(jenisPromoLabel);
-
         JTextField jenisPromoField = new JTextField();
-        jenisPromoField.setBounds(200, 70, 300, 30);
-        panelCreatePromo.add(jenisPromoField);
-
         JLabel tanggalAwalLabel = new JLabel("Tanggal Awal:");
-        tanggalAwalLabel.setBounds(50, 110, 100, 30);
-        panelCreatePromo.add(tanggalAwalLabel);
-
         JComboBox<String> tanggalAwalComboBox = new JComboBox<>(getDates());
-        tanggalAwalComboBox.setBounds(200, 110, 80, 30);
-        panelCreatePromo.add(tanggalAwalComboBox);
-
         JComboBox<String> bulanAwalComboBox = new JComboBox<>(getMonths());
-        bulanAwalComboBox.setBounds(290, 110, 80, 30);
-        panelCreatePromo.add(bulanAwalComboBox);
-
         JComboBox<String> tahunAwalComboBox = new JComboBox<>(getYears());
-        tahunAwalComboBox.setBounds(380, 110, 120, 30);
-        panelCreatePromo.add(tahunAwalComboBox);
-
         JLabel tanggalAkhirLabel = new JLabel("Tanggal Akhir:");
-        tanggalAkhirLabel.setBounds(50, 150, 100, 30);
-        panelCreatePromo.add(tanggalAkhirLabel);
-
         JComboBox<String> tanggalAkhirComboBox = new JComboBox<>(getDates());
-        tanggalAkhirComboBox.setBounds(200, 150, 80, 30);
-        panelCreatePromo.add(tanggalAkhirComboBox);
-
         JComboBox<String> bulanAkhirComboBox = new JComboBox<>(getMonths());
-        bulanAkhirComboBox.setBounds(290, 150, 80, 30);
-        panelCreatePromo.add(bulanAkhirComboBox);
-
         JComboBox<String> tahunAkhirComboBox = new JComboBox<>(getYears());
-        tahunAkhirComboBox.setBounds(380, 150, 120, 30);
-        panelCreatePromo.add(tahunAkhirComboBox);
-
         JLabel maksPotonganLabel = new JLabel("Maks Potongan:");
-        maksPotonganLabel.setBounds(50, 190, 100, 30);
-        panelCreatePromo.add(maksPotonganLabel);
-
         JTextField maksPotonganField = new JTextField();
-        maksPotonganField.setBounds(200, 190, 300, 30);
-        panelCreatePromo.add(maksPotonganField);
-
         JLabel minPotonganLabel = new JLabel("Min Potongan:");
-        minPotonganLabel.setBounds(50, 230, 100, 30);
-        panelCreatePromo.add(minPotonganLabel);
-
         JTextField minPotonganField = new JTextField();
-        minPotonganField.setBounds(200, 230, 300, 30);
-        panelCreatePromo.add(minPotonganField);
 
+        centerPanel.add(jenisPromoLabel);
+        centerPanel.add(jenisPromoField);
+        centerPanel.add(tanggalAwalLabel);
+        centerPanel.add(tanggalAwalComboBox);
+        centerPanel.add(bulanAwalComboBox);
+        centerPanel.add(tahunAwalComboBox);
+        centerPanel.add(tanggalAkhirLabel);
+        centerPanel.add(tanggalAkhirComboBox);
+        centerPanel.add(bulanAkhirComboBox);
+        centerPanel.add(tahunAkhirComboBox);
+        centerPanel.add(maksPotonganLabel);
+        centerPanel.add(maksPotonganField);
+        centerPanel.add(minPotonganLabel);
+        centerPanel.add(minPotonganField);
+
+        panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 290, 100, 30);
-        panelCreatePromo.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for saving promo information
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 290, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
-        panelCreatePromo.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelCreatePromo.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCreateMenu() {
         panelCreateMenu = new JPanel();
-        panelCreateMenu.setLayout(null);
-        panelCreateMenu.setBounds(0, 0, 600, 400);
+        panelCreateMenu.setLayout(new BorderLayout());
 
-        JLabel panelCreateMenuLabel = new JLabel("Panel Create Menu");
-        panelCreateMenuLabel.setBounds(200, 20, 200, 30);
-        panelCreateMenu.add(panelCreateMenuLabel);
+        JLabel panelCreateMenuLabel = new JLabel("Panel Create Menu", SwingConstants.CENTER);
+        panelCreateMenu.add(panelCreateMenuLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(5, 2));
 
         JLabel idMenuLabel = new JLabel("ID Menu:");
-        idMenuLabel.setBounds(50, 70, 100, 30);
-        panelCreateMenu.add(idMenuLabel);
-
         JTextField idMenuField = new JTextField();
-        idMenuField.setBounds(200, 70, 300, 30);
-        panelCreateMenu.add(idMenuField);
-
         JLabel namaMenuLabel = new JLabel("Nama Menu:");
-        namaMenuLabel.setBounds(50, 110, 100, 30);
-        panelCreateMenu.add(namaMenuLabel);
-
         JTextField namaMenuField = new JTextField();
-        namaMenuField.setBounds(200, 110, 300, 30);
-        panelCreateMenu.add(namaMenuField);
-
         JLabel platNomorLabel = new JLabel("Plat Nomor:");
-        platNomorLabel.setBounds(50, 150, 100, 30);
-        panelCreateMenu.add(platNomorLabel);
-
         JTextField platNomorField = new JTextField();
-        platNomorField.setBounds(200, 150, 300, 30);
-        panelCreateMenu.add(platNomorField);
-
         JLabel hargaLabel = new JLabel("Harga:");
-        hargaLabel.setBounds(50, 190, 100, 30);
-        panelCreateMenu.add(hargaLabel);
-
         JTextField hargaField = new JTextField();
-        hargaField.setBounds(200, 190, 300, 30);
-        panelCreateMenu.add(hargaField);
-
         JLabel customTypeLabel = new JLabel("Custom Type:");
-        customTypeLabel.setBounds(50, 230, 100, 30);
-        panelCreateMenu.add(customTypeLabel);
-
         JTextField customTypeField = new JTextField();
-        customTypeField.setBounds(200, 230, 300, 30);
-        panelCreateMenu.add(customTypeField);
 
+        centerPanel.add(idMenuLabel);
+        centerPanel.add(idMenuField);
+        centerPanel.add(namaMenuLabel);
+        centerPanel.add(namaMenuField);
+        centerPanel.add(platNomorLabel);
+        centerPanel.add(platNomorField);
+        centerPanel.add(hargaLabel);
+        centerPanel.add(hargaField);
+        centerPanel.add(customTypeLabel);
+        centerPanel.add(customTypeField);
+
+        panelCreateMenu.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 290, 100, 30);
-        panelCreateMenu.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for saving menu information
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 290, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
-        panelCreateMenu.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelCreateMenu.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanel3() {
         panel3 = new JPanel();
-        panel3.setLayout(null);
-        panel3.setBounds(0, 0, 600, 400);
+        panel3.setLayout(new BorderLayout());
 
-        JLabel panel3Label = new JLabel("Panel 3");
-        panel3Label.setBounds(250, 20, 100, 30);
-        panel3.add(panel3Label);
+        JLabel panel3Label = new JLabel("Panel 3", SwingConstants.CENTER);
+        panel3.add(panel3Label, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(2, 2));
 
         JList<String> cartList = new JList<>(new String[] { "Cart Item 1", "Cart Item 2", "Cart Item 3" });
         JScrollPane cartScrollPane = new JScrollPane(cartList);
-        cartScrollPane.setBounds(50, 50, 200, 200);
-        panel3.add(cartScrollPane);
+        centerPanel.add(cartScrollPane);
 
         JList<String> appliedPromoList = new JList<>(
                 new String[] { "Applied Promo 1", "Applied Promo 2", "Applied Promo 3" });
         JScrollPane appliedPromoScrollPane = new JScrollPane(appliedPromoList);
-        appliedPromoScrollPane.setBounds(300, 50, 200, 200);
-        panel3.add(appliedPromoScrollPane);
+        centerPanel.add(appliedPromoScrollPane);
+
+        panel3.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
+            }
+        });
+        bottomPanel.add(backButton);
 
         JButton addToCartButton = new JButton("Add to Cart");
-        addToCartButton.setBounds(50, 300, 100, 30);
         addToCartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panelAddToCart);
             }
         });
-        panel3.add(addToCartButton);
+        bottomPanel.add(addToCartButton);
 
         JButton removeFromCartButton = new JButton("Remove from Cart");
-        removeFromCartButton.setBounds(170, 300, 150, 30);
         removeFromCartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panelRemoveFromCart);
             }
         });
-        panel3.add(removeFromCartButton);
+        bottomPanel.add(removeFromCartButton);
 
         JButton applyPromoButton = new JButton("Apply Promo");
-        applyPromoButton.setBounds(340, 300, 120, 30);
         applyPromoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panelApplyPromo);
             }
         });
-        panel3.add(applyPromoButton);
-
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(50, 350, 100, 30);
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
-            }
-        });
-        panel3.add(backButton);
-
+        bottomPanel.add(applyPromoButton);
         JButton nextButton = new JButton("Next");
-        nextButton.setBounds(470, 350, 100, 30);
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCheckOut);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCheckOut");
             }
         });
-        panel3.add(nextButton);
+        bottomPanel.add(nextButton);
+
+        panel3.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelAddToCart() {
         panelAddToCart = new JPanel();
-        panelAddToCart.setLayout(null);
-        panelAddToCart.setBounds(0, 0, 600, 400);
+        panelAddToCart.setLayout(new BorderLayout());
 
-        JLabel panelAddToCartLabel = new JLabel("Panel Add To Cart");
-        panelAddToCartLabel.setBounds(200, 20, 200, 30);
-        panelAddToCart.add(panelAddToCartLabel);
+        JLabel panelAddToCartLabel = new JLabel("Panel Add To Cart", SwingConstants.CENTER);
+        panelAddToCart.add(panelAddToCartLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 2));
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        idPemesanLabel.setBounds(50, 70, 100, 30);
-        panelAddToCart.add(idPemesanLabel);
+        centerPanel.add(idPemesanLabel);
 
         JTextField idPemesanField = new JTextField();
-        idPemesanField.setBounds(200, 70, 300, 30);
-        panelAddToCart.add(idPemesanField);
+        centerPanel.add(idPemesanField);
 
         JLabel idMenuLabel = new JLabel("ID Menu:");
-        idMenuLabel.setBounds(50, 110, 100, 30);
-        panelAddToCart.add(idMenuLabel);
+        centerPanel.add(idMenuLabel);
 
         JTextField idMenuField = new JTextField();
-        idMenuField.setBounds(200, 110, 300, 30);
-        panelAddToCart.add(idMenuField);
+        centerPanel.add(idMenuField);
 
         JLabel quantityLabel = new JLabel("Quantity:");
-        quantityLabel.setBounds(50, 150, 100, 30);
-        panelAddToCart.add(quantityLabel);
+        centerPanel.add(quantityLabel);
 
         JTextField quantityField = new JTextField();
-        quantityField.setBounds(200, 150, 300, 30);
-        panelAddToCart.add(quantityField);
+        centerPanel.add(quantityField);
+
+        panelAddToCart.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 210, 100, 30);
-        panelAddToCart.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for saving item to cart
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 210, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panel3);
             }
         });
-        panelAddToCart.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelAddToCart.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelRemoveFromCart() {
         panelRemoveFromCart = new JPanel();
-        panelRemoveFromCart.setLayout(null);
-        panelRemoveFromCart.setBounds(0, 0, 600, 400);
+        panelRemoveFromCart.setLayout(new BorderLayout());
 
-        JLabel panelRemoveFromCartLabel = new JLabel("Panel Remove From Cart");
-        panelRemoveFromCartLabel.setBounds(200, 20, 200, 30);
-        panelRemoveFromCart.add(panelRemoveFromCartLabel);
+        JLabel panelRemoveFromCartLabel = new JLabel("Panel Remove From Cart", SwingConstants.CENTER);
+        panelRemoveFromCart.add(panelRemoveFromCartLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 2));
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        idPemesanLabel.setBounds(50, 70, 100, 30);
-        panelRemoveFromCart.add(idPemesanLabel);
+        centerPanel.add(idPemesanLabel);
 
         JTextField idPemesanField = new JTextField();
-        idPemesanField.setBounds(200, 70, 300, 30);
-        panelRemoveFromCart.add(idPemesanField);
+        centerPanel.add(idPemesanField);
 
         JLabel idMenuLabel = new JLabel("ID Menu:");
-        idMenuLabel.setBounds(50, 110, 100, 30);
-        panelRemoveFromCart.add(idMenuLabel);
+        centerPanel.add(idMenuLabel);
 
         JTextField idMenuField = new JTextField();
-        idMenuField.setBounds(200, 110, 300, 30);
-        panelRemoveFromCart.add(idMenuField);
+        centerPanel.add(idMenuField);
 
         JLabel quantityLabel = new JLabel("Quantity:");
-        quantityLabel.setBounds(50, 150, 100, 30);
-        panelRemoveFromCart.add(quantityLabel);
+        centerPanel.add(quantityLabel);
 
         JTextField quantityField = new JTextField();
-        quantityField.setBounds(200, 150, 300, 30);
-        panelRemoveFromCart.add(quantityField);
+        centerPanel.add(quantityField);
+
+        panelRemoveFromCart.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 210, 100, 30);
-        panelRemoveFromCart.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for removing item from cart
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 210, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panel3);
             }
         });
-        panelRemoveFromCart.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelRemoveFromCart.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelApplyPromo() {
         panelApplyPromo = new JPanel();
-        panelApplyPromo.setLayout(null);
-        panelApplyPromo.setBounds(0, 0, 600, 400);
+        panelApplyPromo.setLayout(new BorderLayout());
 
-        JLabel panelApplyPromoLabel = new JLabel("Panel Apply Promo");
-        panelApplyPromoLabel.setBounds(200, 20, 200, 30);
-        panelApplyPromo.add(panelApplyPromoLabel);
+        JLabel panelApplyPromoLabel = new JLabel("Panel Apply Promo", SwingConstants.CENTER);
+        panelApplyPromo.add(panelApplyPromoLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 2));
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        idPemesanLabel.setBounds(50, 70, 100, 30);
-        panelApplyPromo.add(idPemesanLabel);
+        centerPanel.add(idPemesanLabel);
 
         JTextField idPemesanField = new JTextField();
-        idPemesanField.setBounds(200, 70, 300, 30);
-        panelApplyPromo.add(idPemesanField);
+        centerPanel.add(idPemesanField);
 
         JLabel kodePromoLabel = new JLabel("Kode Promo:");
-        kodePromoLabel.setBounds(50, 110, 100, 30);
-        panelApplyPromo.add(kodePromoLabel);
+        centerPanel.add(kodePromoLabel);
 
         JTextField kodePromoField = new JTextField();
-        kodePromoField.setBounds(200, 110, 300, 30);
-        panelApplyPromo.add(kodePromoField);
+        centerPanel.add(kodePromoField);
+
+        JLabel promoListLabel = new JLabel("Promo List:");
+        centerPanel.add(promoListLabel);
 
         JList<String> promoList = new JList<>(new String[] { "Promo 1", "Promo 2", "Promo 3" });
         JScrollPane promoScrollPane = new JScrollPane(promoList);
-        promoScrollPane.setBounds(50, 150, 450, 100);
-        panelApplyPromo.add(promoScrollPane);
+        centerPanel.add(promoScrollPane);
+
+        panelApplyPromo.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton simpanButton = new JButton("Simpan");
-        simpanButton.setBounds(200, 270, 100, 30);
-        panelApplyPromo.add(simpanButton);
+        simpanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for applying promo
+            }
+        });
+        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(320, 270, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panel3);
             }
         });
-        panelApplyPromo.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelApplyPromo.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCheckOut() {
         panelCheckOut = new JPanel();
-        panelCheckOut.setLayout(null);
-        panelCheckOut.setBounds(0, 0, 600, 400);
+        panelCheckOut.setLayout(new BorderLayout());
 
-        JLabel panelCheckOutLabel = new JLabel("Panel Check Out");
-        panelCheckOutLabel.setBounds(200, 20, 200, 30);
-        panelCheckOut.add(panelCheckOutLabel);
+        JLabel panelCheckOutLabel = new JLabel("Panel Check Out", SwingConstants.CENTER);
+        panelCheckOut.add(panelCheckOutLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 2));
 
         JLabel idPemesananLabel = new JLabel("ID Pemesanan:");
-        idPemesananLabel.setBounds(50, 70, 100, 30);
-        panelCheckOut.add(idPemesananLabel);
+        centerPanel.add(idPemesananLabel);
 
         JTextField idPemesananField = new JTextField();
-        idPemesananField.setBounds(200, 70, 300, 30);
-        panelCheckOut.add(idPemesananField);
+        centerPanel.add(idPemesananField);
+
+        panelCheckOut.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton cetakPesananButton = new JButton("Cetak Pesanan");
-        cetakPesananButton.setBounds(200, 120, 150, 30);
         cetakPesananButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panelCetak);
             }
         });
-        panelCheckOut.add(cetakPesananButton);
+        bottomPanel.add(cetakPesananButton);
 
         JButton submitButton = new JButton("Submit");
-        submitButton.setBounds(370, 120, 100, 30);
-        panelCheckOut.add(submitButton);
+        bottomPanel.add(submitButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(50, 120, 100, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panel3);
             }
         });
-        panelCheckOut.add(backButton);
+        bottomPanel.add(backButton);
+
+        panelCheckOut.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void initializePanelCetak() {
         panelCetak = new JPanel();
-        panelCetak.setLayout(null);
-        panelCetak.setBounds(0, 0, 600, 400);
+        panelCetak.setLayout(new BorderLayout());
 
-        JLabel panelCetakLabel = new JLabel("Panel Cetak");
-        panelCetakLabel.setBounds(200, 20, 200, 30);
-        panelCetak.add(panelCetakLabel);
+        JLabel panelCetakLabel = new JLabel("Panel Cetak", SwingConstants.CENTER);
+        panelCetak.add(panelCetakLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton backToMenuButton = new JButton("Back To Menu");
-        backToMenuButton.setBounds(150, 120, 150, 30);
         backToMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panel2);
             }
         });
-        panelCetak.add(backToMenuButton);
+        centerPanel.add(backToMenuButton);
 
         JButton finishButton = new JButton("Finish");
-        finishButton.setBounds(320, 120, 100, 30);
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(panelPrintHistory);
             }
         });
-        panelCetak.add(finishButton);
+        centerPanel.add(finishButton);
+
+        panelCetak.add(centerPanel, BorderLayout.CENTER);
     }
 
     private void initializePanelPrintHistory() {
         panelPrintHistory = new JPanel();
-        panelPrintHistory.setLayout(null);
-        panelPrintHistory.setBounds(0, 0, 600, 400);
+        panelPrintHistory.setLayout(new BorderLayout());
 
-        JLabel panelPrintHistoryLabel = new JLabel("Panel Print History");
-        panelPrintHistoryLabel.setBounds(200, 20, 200, 30);
-        panelPrintHistory.add(panelPrintHistoryLabel);
+        JLabel panelPrintHistoryLabel = new JLabel("Panel Print History", SwingConstants.CENTER);
+        panelPrintHistory.add(panelPrintHistoryLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton closeButton = new JButton("Close");
-        closeButton.setBounds(250, 120, 100, 30);
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
         });
-        panelPrintHistory.add(closeButton);
+        centerPanel.add(closeButton);
+
+        panelPrintHistory.add(centerPanel, BorderLayout.CENTER);
     }
 
     private String[] getDates() {
@@ -836,7 +890,9 @@ public class FilkomTravel extends JFrame {
     private void switchPanel(JPanel panel) {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(panel);
-        frame.repaint();
-        frame.revalidate();
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
+
 }

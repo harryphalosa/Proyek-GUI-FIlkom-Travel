@@ -6,6 +6,7 @@ import core.customer.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Locale;
 import java.util.Map;
@@ -203,22 +204,42 @@ public class FilkomTravel extends JFrame {
         JTextField idField = new JTextField();
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
-        JLabel emailLabel = new JLabel("Email:");
-        JTextField emailField = new JTextField();
-        JLabel phoneLabel = new JLabel("Phone:");
-        JTextField phoneField = new JTextField();
+        // Membuat combo box untuk tanggal
+        JLabel registerDateLabel = new JLabel("Register Date:");
+        String[] days = new String[31];
+        for (int i = 0; i < 31; i++) {
+            days[i] = String.valueOf(i + 1);
+        }
+        JComboBox<String> dayComboBox = new JComboBox<>(days);
+        // Membuat combo box untuk bulan
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        JComboBox<String> monthComboBox = new JComboBox<>(months);
+
+        // Membuat combo box untuk tahun
+        String[] years = new String[100];
+        int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+        for (int i = 0; i < 100; i++) {
+            years[i] = String.valueOf(currentYear - i);
+        }
+        JComboBox<String> yearComboBox = new JComboBox<>(years);
+
+        JLabel saldoLabel = new JLabel("Saldo:");
+        JTextField saldoField = new JTextField();
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idLabel)
                         .addComponent(nameLabel)
-                        .addComponent(emailLabel)
-                        .addComponent(phoneLabel))
+                        .addComponent(registerDateLabel)
+                        .addComponent(saldoLabel)) // Menambahkan label saldo
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idField)
                         .addComponent(nameField)
-                        .addComponent(emailField)
-                        .addComponent(phoneField)));
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(dayComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(monthComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(yearComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(saldoField))); // Menambahkan field saldo
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -228,13 +249,17 @@ public class FilkomTravel extends JFrame {
                         .addComponent(nameLabel)
                         .addComponent(nameField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(emailLabel)
-                        .addComponent(emailField))
+                        .addComponent(registerDateLabel) // Menambahkan label tanggal
+                        .addComponent(dayComboBox) // Menambahkan combo box tanggal
+                        .addComponent(monthComboBox) // Menambahkan combo box bulan
+                        .addComponent(yearComboBox)) // Menambahkan combo box tahun
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(phoneLabel)
-                        .addComponent(phoneField)));
+                        .addComponent(saldoLabel) // Menambahkan label saldo
+                        .addComponent(saldoField))); // Menambahkan field saldo
 
         panelCreateMember.add(centerPanel, BorderLayout.CENTER);
+
+                panelCreateMember.add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -250,9 +275,34 @@ public class FilkomTravel extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for creating member
+            // Mengambil nilai ID, nama, tanggal daftar, dan saldo dari field
+            String memberId = idField.getText();
+            String memberName = nameField.getText();
+            // Mengambil nilai dari combo box tanggal, bulan, dan tahun
+            String day = (String) dayComboBox.getSelectedItem();
+            String month = (String) monthComboBox.getSelectedItem();
+            String year = (String) yearComboBox.getSelectedItem();
+
+            // Mengonversi nilai tersebut menjadi objek LocalDate
+            String dateString = day + " " + month + " " + year;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            int memberBudget = Integer.parseInt(saldoField.getText());
+
+            // Mengecek apakah ID sudah ada dalam listCustomer
+            boolean isExisting = isIDExist(listCustomer, memberId);
+
+            // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
+            if (isExisting) {
+                JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
+            } else {
+                // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan pop-up "CREATE MEMBER SUCCESS"
+                listCustomer.add(new Member(memberId, memberName, date, memberBudget));
+                JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER SUCCESS: " + memberId);
             }
-        });
+        }
+    });
+        
         bottomPanel.add(backButton);
         bottomPanel.add(createButton);
         panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);

@@ -5,26 +5,37 @@ import java.awt.*;
 
 public class TopUpPanel extends JPanel {
     public TopUpPanel(MainWindow mainWindow) {
-        setLayout(new BorderLayout());
+        setLayout(null);
 
-        JLabel titleLabel = new JLabel("Top Up Balance", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Top Up", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        add(titleLabel, BorderLayout.NORTH);
+        titleLabel.setBounds(250, 20, 300, 30);
+        add(titleLabel);
 
-        JPanel formPanel = new JPanel(new GridLayout(3, 2, 10, 10));
-        formPanel.add(new JLabel("Customer ID:"));
-        formPanel.add(new JTextField());
-        formPanel.add(new JLabel("Amount:"));
-        formPanel.add(new JTextField());
+        JLabel accountIdLabel = new JLabel("Account ID:");
+        accountIdLabel.setBounds(200, 100, 100, 30);
+        add(accountIdLabel);
 
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(e -> {
-            // Add top-up logic here
-            mainWindow.showPanel("StartPanel");
-        });
+        JTextField accountIdField = new JTextField();
+        accountIdField.setBounds(300, 100, 200, 30);
+        add(accountIdField);
 
-        formPanel.add(submitButton);
-        add(formPanel, BorderLayout.CENTER);
-        formPanel.setVisible(true);
+        JLabel amountLabel = new JLabel("Amount:");
+        amountLabel.setBounds(200, 150, 100, 30);
+        add(amountLabel);
+
+        JTextField amountField = new JTextField();
+        amountField.setBounds(300, 150, 200, 30);
+        add(amountField);
+
+        JButton topUpButton = new JButton("Top Up");
+        topUpButton.setBounds(350, 200, 100, 30);
+        topUpButton.addActionListener(e -> mainWindow.showPanel("StartPanel"));
+        add(topUpButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(200, 200, 100, 30);
+        backButton.addActionListener(e -> mainWindow.showPanel("StartPanel"));
+        add(backButton);
     }
 }

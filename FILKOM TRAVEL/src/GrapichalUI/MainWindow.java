@@ -17,12 +17,17 @@ public class MainWindow extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         // Menambahkan panel
-        mainPanel.add(new WelcomePanel(this), "WelcomePanel");
-        mainPanel.add(new StartPanel(this), "StartPanel");
-        mainPanel.add(new CreateCustomerPanel(this), "CreateCustomerPanel");
-        mainPanel.add(new CreateMenuPanel(this), "CreateMenuPanel");
-        mainPanel.add(new CreatePromoPanel(this), "CreatePromoPanel");
-        mainPanel.add(new TopUpPanel(this), "TopUpPanel");
+        mainPanel.add("WelcomePanel", new WelcomePanel(this));
+        mainPanel.add("StartPanel", new StartPanel(this));
+        mainPanel.add("CreateMemberPanel", new CreateMemberPanel(this));
+        mainPanel.add("CreateGuestPanel", new CreateGuestPanel(this));
+        mainPanel.add("CreateMenuPanel", new CreateMenuPanel(this));
+        mainPanel.add("CreatePromoPanel", new CreatePromoPanel(this));
+        mainPanel.add("AddToCartPanel", new AddToCartPanel(this));
+        mainPanel.add("CheckoutPanel", new CheckoutPanel(this));
+        mainPanel.add("ApplyPromoPanel", new ApplyPromoPanel(this));
+        mainPanel.add("RemoveFromCartPanel", new RemoveFromCartPanel(this));
+        mainPanel.add("TopUpPanel", new TopUpPanel(this));
 
         add(mainPanel);
         cardLayout.show(mainPanel, "WelcomePanel");

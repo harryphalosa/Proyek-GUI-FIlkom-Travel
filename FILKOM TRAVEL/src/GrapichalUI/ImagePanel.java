@@ -9,7 +9,6 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel(String fileName) {
         try {
-            // Memuat gambar menggunakan class loader
             URL imageUrl = getClass().getResource(fileName);
             if (imageUrl == null) {
                 System.out.println("Gambar tidak ditemukan: " + fileName);

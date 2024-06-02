@@ -366,17 +366,31 @@ public class FilkomTravel extends JFrame {
         panelTopUp.add(panelTopUpLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(3, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
         JTextField idPemesanField = new JTextField();
         JLabel nominalTopUpLabel = new JLabel("Nominal Top Up:");
         JTextField nominalTopUpField = new JTextField();
 
-        centerPanel.add(idPemesanLabel);
-        centerPanel.add(idPemesanField);
-        centerPanel.add(nominalTopUpLabel);
-        centerPanel.add(nominalTopUpField);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(nominalTopUpLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanField)
+                        .addComponent(nominalTopUpField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idPemesanField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(nominalTopUpLabel)
+                        .addComponent(nominalTopUpField)));
 
         panelTopUp.add(centerPanel, BorderLayout.CENTER);
 
@@ -412,7 +426,10 @@ public class FilkomTravel extends JFrame {
         panelCreatePromo.add(panelCreatePromoLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(5, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel jenisPromoLabel = new JLabel("Jenis Promo:");
         JTextField jenisPromoField = new JTextField();
@@ -429,20 +446,46 @@ public class FilkomTravel extends JFrame {
         JLabel minPotonganLabel = new JLabel("Min Potongan:");
         JTextField minPotonganField = new JTextField();
 
-        centerPanel.add(jenisPromoLabel);
-        centerPanel.add(jenisPromoField);
-        centerPanel.add(tanggalAwalLabel);
-        centerPanel.add(tanggalAwalComboBox);
-        centerPanel.add(bulanAwalComboBox);
-        centerPanel.add(tahunAwalComboBox);
-        centerPanel.add(tanggalAkhirLabel);
-        centerPanel.add(tanggalAkhirComboBox);
-        centerPanel.add(bulanAkhirComboBox);
-        centerPanel.add(tahunAkhirComboBox);
-        centerPanel.add(maksPotonganLabel);
-        centerPanel.add(maksPotonganField);
-        centerPanel.add(minPotonganLabel);
-        centerPanel.add(minPotonganField);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(jenisPromoLabel)
+                        .addComponent(tanggalAwalLabel)
+                        .addComponent(tanggalAkhirLabel)
+                        .addComponent(maksPotonganLabel)
+                        .addComponent(minPotonganLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jenisPromoField)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(tanggalAwalComboBox)
+                                .addComponent(bulanAwalComboBox)
+                                .addComponent(tahunAwalComboBox))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(tanggalAkhirComboBox)
+                                .addComponent(bulanAkhirComboBox)
+                                .addComponent(tahunAkhirComboBox))
+                        .addComponent(maksPotonganField)
+                        .addComponent(minPotonganField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(jenisPromoLabel)
+                        .addComponent(jenisPromoField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(tanggalAwalLabel)
+                        .addComponent(tanggalAwalComboBox)
+                        .addComponent(bulanAwalComboBox)
+                        .addComponent(tahunAwalComboBox))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(tanggalAkhirLabel)
+                        .addComponent(tanggalAkhirComboBox)
+                        .addComponent(bulanAkhirComboBox)
+                        .addComponent(tahunAkhirComboBox))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(maksPotonganLabel)
+                        .addComponent(maksPotonganField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(minPotonganLabel)
+                        .addComponent(minPotonganField)));
 
         panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
 
@@ -478,7 +521,10 @@ public class FilkomTravel extends JFrame {
         panelCreateMenu.add(panelCreateMenuLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(5, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idMenuLabel = new JLabel("ID Menu:");
         JTextField idMenuField = new JTextField();
@@ -491,16 +537,36 @@ public class FilkomTravel extends JFrame {
         JLabel customTypeLabel = new JLabel("Custom Type:");
         JTextField customTypeField = new JTextField();
 
-        centerPanel.add(idMenuLabel);
-        centerPanel.add(idMenuField);
-        centerPanel.add(namaMenuLabel);
-        centerPanel.add(namaMenuField);
-        centerPanel.add(platNomorLabel);
-        centerPanel.add(platNomorField);
-        centerPanel.add(hargaLabel);
-        centerPanel.add(hargaField);
-        centerPanel.add(customTypeLabel);
-        centerPanel.add(customTypeField);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(idMenuLabel)
+                        .addComponent(namaMenuLabel)
+                        .addComponent(platNomorLabel)
+                        .addComponent(hargaLabel)
+                        .addComponent(customTypeLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idMenuField)
+                        .addComponent(namaMenuField)
+                        .addComponent(platNomorField)
+                        .addComponent(hargaField)
+                        .addComponent(customTypeField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idMenuLabel)
+                        .addComponent(idMenuField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(namaMenuLabel)
+                        .addComponent(namaMenuField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(platNomorLabel)
+                        .addComponent(platNomorField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(hargaLabel)
+                        .addComponent(hargaField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(customTypeLabel)
+                        .addComponent(customTypeField)));
 
         panelCreateMenu.add(centerPanel, BorderLayout.CENTER);
 
@@ -536,16 +602,37 @@ public class FilkomTravel extends JFrame {
         panel3.add(panel3Label, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(2, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
+        JLabel cartListLabel = new JLabel("Cart List:");
         JList<String> cartList = new JList<>(new String[] { "Cart Item 1", "Cart Item 2", "Cart Item 3" });
         JScrollPane cartScrollPane = new JScrollPane(cartList);
-        centerPanel.add(cartScrollPane);
+        cartScrollPane.setPreferredSize(new Dimension(150, 200));
 
+        JLabel appliedPromoListLabel = new JLabel("Applied Promo List:");
         JList<String> appliedPromoList = new JList<>(
                 new String[] { "Applied Promo 1", "Applied Promo 2", "Applied Promo 3" });
         JScrollPane appliedPromoScrollPane = new JScrollPane(appliedPromoList);
-        centerPanel.add(appliedPromoScrollPane);
+        appliedPromoScrollPane.setPreferredSize(new Dimension(150, 200));
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(cartListLabel)
+                        .addComponent(cartScrollPane))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(appliedPromoListLabel)
+                        .addComponent(appliedPromoScrollPane)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(cartListLabel)
+                        .addComponent(appliedPromoListLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(cartScrollPane)
+                        .addComponent(appliedPromoScrollPane)));
 
         panel3.add(centerPanel, BorderLayout.CENTER);
 
@@ -556,8 +643,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "Panel2");
+                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
+                cardLayout.show(frame.getContentPane(), "Panel2");
             }
         });
         bottomPanel.add(backButton);
@@ -588,12 +675,13 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(applyPromoButton);
+
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "PanelCheckOut");
+                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
+                cardLayout.show(frame.getContentPane(), "PanelCheckOut");
             }
         });
         bottomPanel.add(nextButton);
@@ -609,25 +697,38 @@ public class FilkomTravel extends JFrame {
         panelAddToCart.add(panelAddToCartLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(3, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        centerPanel.add(idPemesanLabel);
-
         JTextField idPemesanField = new JTextField();
-        centerPanel.add(idPemesanField);
-
         JLabel idMenuLabel = new JLabel("ID Menu:");
-        centerPanel.add(idMenuLabel);
-
         JTextField idMenuField = new JTextField();
-        centerPanel.add(idMenuField);
-
         JLabel quantityLabel = new JLabel("Quantity:");
-        centerPanel.add(quantityLabel);
-
         JTextField quantityField = new JTextField();
-        centerPanel.add(quantityField);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idMenuLabel)
+                        .addComponent(quantityLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanField)
+                        .addComponent(idMenuField)
+                        .addComponent(quantityField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idPemesanField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idMenuLabel)
+                        .addComponent(idMenuField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(quantityLabel)
+                        .addComponent(quantityField)));
 
         panelAddToCart.add(centerPanel, BorderLayout.CENTER);
 
@@ -663,25 +764,38 @@ public class FilkomTravel extends JFrame {
         panelRemoveFromCart.add(panelRemoveFromCartLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(3, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        centerPanel.add(idPemesanLabel);
-
         JTextField idPemesanField = new JTextField();
-        centerPanel.add(idPemesanField);
-
         JLabel idMenuLabel = new JLabel("ID Menu:");
-        centerPanel.add(idMenuLabel);
-
         JTextField idMenuField = new JTextField();
-        centerPanel.add(idMenuField);
-
         JLabel quantityLabel = new JLabel("Quantity:");
-        centerPanel.add(quantityLabel);
-
         JTextField quantityField = new JTextField();
-        centerPanel.add(quantityField);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idMenuLabel)
+                        .addComponent(quantityLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanField)
+                        .addComponent(idMenuField)
+                        .addComponent(quantityField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idPemesanField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idMenuLabel)
+                        .addComponent(idMenuField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(quantityLabel)
+                        .addComponent(quantityField)));
 
         panelRemoveFromCart.add(centerPanel, BorderLayout.CENTER);
 
@@ -717,26 +831,39 @@ public class FilkomTravel extends JFrame {
         panelApplyPromo.add(panelApplyPromoLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(3, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        centerPanel.add(idPemesanLabel);
-
         JTextField idPemesanField = new JTextField();
-        centerPanel.add(idPemesanField);
-
         JLabel kodePromoLabel = new JLabel("Kode Promo:");
-        centerPanel.add(kodePromoLabel);
-
         JTextField kodePromoField = new JTextField();
-        centerPanel.add(kodePromoField);
-
         JLabel promoListLabel = new JLabel("Promo List:");
-        centerPanel.add(promoListLabel);
-
         JList<String> promoList = new JList<>(new String[] { "Promo 1", "Promo 2", "Promo 3" });
         JScrollPane promoScrollPane = new JScrollPane(promoList);
-        centerPanel.add(promoScrollPane);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(kodePromoLabel)
+                        .addComponent(promoListLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesanField)
+                        .addComponent(kodePromoField)
+                        .addComponent(promoScrollPane)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idPemesanLabel)
+                        .addComponent(idPemesanField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(kodePromoLabel)
+                        .addComponent(kodePromoField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(promoListLabel)
+                        .addComponent(promoScrollPane)));
 
         panelApplyPromo.add(centerPanel, BorderLayout.CENTER);
 
@@ -801,7 +928,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel3);
+                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
+                cardLayout.show(frame.getContentPane(), "Panel3");
             }
         });
         bottomPanel.add(backButton);

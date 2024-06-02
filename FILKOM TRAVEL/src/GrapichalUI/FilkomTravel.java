@@ -2,6 +2,9 @@ package GrapichalUI;
 
 import core.*;
 import core.customer.*;
+import core.promotion.CashbackPromo;
+import core.promotion.Discount;
+import core.promotion.Promotion;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +38,7 @@ public class FilkomTravel extends JFrame {
     private JPanel panelCetak;
     private JPanel panelPrintHistory;
     ArrayList<Customer> listCustomer = new ArrayList<>();
+    ArrayList<Promotion> listPromotion = new ArrayList<>();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -547,8 +551,24 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel jenisPromoLabel = new JLabel("Jenis Promo:");
-        JTextField jenisPromoField = new JTextField();
+        // Radio button untuk memilih jenis promo
+        JRadioButton cashbackRadioButton = new JRadioButton("Cashback Promo");
+        JRadioButton discountRadioButton = new JRadioButton("Discount Promo");
+
+        
+         // Promo name
+         JLabel promoNameLabel = new JLabel("Promo Name:");
+         JTextField promoNameField = new JTextField();
+
+        // Persen Potongan
+        JLabel persenPotonganLabel = new JLabel("Persen Potongan:");
+        JTextField persenPotonganField = new JTextField();
+
+        // Grupkan radio button agar hanya satu yang bisa dipilih
+        ButtonGroup promoTypeGroup = new ButtonGroup();
+        promoTypeGroup.add(cashbackRadioButton);
+        promoTypeGroup.add(discountRadioButton);
+
         JLabel tanggalAwalLabel = new JLabel("Tanggal Awal:");
         JComboBox<String> tanggalAwalComboBox = new JComboBox<>(getDates());
         JComboBox<String> bulanAwalComboBox = new JComboBox<>(getMonths());
@@ -559,51 +579,64 @@ public class FilkomTravel extends JFrame {
         JComboBox<String> tahunAkhirComboBox = new JComboBox<>(getYears());
         JLabel maksPotonganLabel = new JLabel("Maks Potongan:");
         JTextField maksPotonganField = new JTextField();
-        JLabel minPotonganLabel = new JLabel("Min Potongan:");
-        JTextField minPotonganField = new JTextField();
+        JLabel minPembelianLabel = new JLabel("Min Pembelian:");
+        JTextField minPembelianField = new JTextField();
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(jenisPromoLabel)
-                        .addComponent(tanggalAwalLabel)
-                        .addComponent(tanggalAkhirLabel)
-                        .addComponent(maksPotonganLabel)
-                        .addComponent(minPotonganLabel))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jenisPromoField)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(tanggalAwalComboBox)
-                                .addComponent(bulanAwalComboBox)
-                                .addComponent(tahunAwalComboBox))
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(tanggalAkhirComboBox)
-                                .addComponent(bulanAkhirComboBox)
-                                .addComponent(tahunAkhirComboBox))
-                        .addComponent(maksPotonganField)
-                        .addComponent(minPotonganField)));
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jenisPromoLabel)
-                        .addComponent(jenisPromoField))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(tanggalAwalLabel)
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(cashbackRadioButton)
+                .addComponent(discountRadioButton))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addComponent(promoNameLabel)
+                .addComponent(persenPotonganLabel)
+                .addComponent(tanggalAwalLabel)
+                .addComponent(tanggalAkhirLabel)
+                .addComponent(maksPotonganLabel)
+                .addComponent(minPembelianLabel))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(promoNameField)
+                .addComponent(persenPotonganField)
+                .addGroup(layout.createSequentialGroup()
                         .addComponent(tanggalAwalComboBox)
                         .addComponent(bulanAwalComboBox)
                         .addComponent(tahunAwalComboBox))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(tanggalAkhirLabel)
+                .addGroup(layout.createSequentialGroup()
                         .addComponent(tanggalAkhirComboBox)
                         .addComponent(bulanAkhirComboBox)
                         .addComponent(tahunAkhirComboBox))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(maksPotonganLabel)
-                        .addComponent(maksPotonganField))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(minPotonganLabel)
-                        .addComponent(minPotonganField)));
+                .addComponent(maksPotonganField)
+                .addComponent(minPembelianField)));
 
-        panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
+layout.setVerticalGroup(layout.createSequentialGroup()
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(cashbackRadioButton))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(discountRadioButton))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(promoNameLabel)
+                .addComponent(promoNameField))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(persenPotonganLabel)
+                .addComponent(persenPotonganField))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(tanggalAwalLabel)
+                .addComponent(tanggalAwalComboBox)
+                .addComponent(bulanAwalComboBox)
+                .addComponent(tahunAwalComboBox))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(tanggalAkhirLabel)
+                .addComponent(tanggalAkhirComboBox)
+                .addComponent(bulanAkhirComboBox)
+                .addComponent(tahunAkhirComboBox))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(maksPotonganLabel)
+                .addComponent(maksPotonganField))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(minPembelianLabel)
+                .addComponent(minPembelianField)));
+
+panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
+
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -611,7 +644,50 @@ public class FilkomTravel extends JFrame {
         simpanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for saving promo information
+                    // Mendapatkan nilai dari JTextField langsung
+                    String promoName = promoNameField.getText();
+                    LocalDate tanggalAwal = LocalDate.of(
+                            Integer.parseInt((String) tahunAwalComboBox.getSelectedItem()),
+                            bulanAwalComboBox.getSelectedIndex() + 1,
+                            Integer.parseInt((String) tanggalAwalComboBox.getSelectedItem())
+                    );
+                    LocalDate tanggalAkhir = LocalDate.of(
+                            Integer.parseInt((String) tahunAkhirComboBox.getSelectedItem()),
+                            bulanAkhirComboBox.getSelectedIndex() + 1,
+                            Integer.parseInt((String) tanggalAkhirComboBox.getSelectedItem())
+                    );
+                    int maksPotongan = Integer.parseInt(maksPotonganField.getText());
+                    int minPembelian = Integer.parseInt(minPembelianField.getText());
+                    int persenPotongan = Integer.parseInt(persenPotonganField.getText());
+    
+                    // Menentukan jenis promo berdasarkan radio button yang dipilih
+                    String selectedPromoType;
+                    if (cashbackRadioButton.isSelected()) {
+                        selectedPromoType = "CASHBACK";
+                    } else if (discountRadioButton.isSelected()) {
+                        selectedPromoType = "DISCOUNT";
+                    } else {
+                        // Tidak ada radio button yang dipilih
+                        JOptionPane.showMessageDialog(panelCreatePromo, "Pilih jenis promo terlebih dahulu!");
+                        return;
+                    }
+    
+                    // Logika untuk menyimpan informasi promo
+                    if (!isPromoExist(listPromotion, promoName)) {
+                        if (selectedPromoType.equals("CASHBACK")) {
+                            listPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan, maksPotongan, minPembelian));
+                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK SUCCESS: " + promoName);
+                        } else if (selectedPromoType.equals("DISCOUNT")) {
+                            listPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan, maksPotongan, minPembelian));
+                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT SUCCESS: " + promoName);
+                        }
+                    } else {
+                        if (selectedPromoType.equals("CASHBACK")) {
+                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK FAILED: " + promoName + " IS EXISTS");
+                        } else if (selectedPromoType.equals("DISCOUNT")) {
+                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT FAILED: " + promoName + " IS EXISTS");
+                        }
+                }
             }
         });
         bottomPanel.add(simpanButton);
@@ -628,6 +704,16 @@ public class FilkomTravel extends JFrame {
 
         panelCreatePromo.add(bottomPanel, BorderLayout.SOUTH);
     }
+
+    private boolean isPromoExist(ArrayList<Promotion> listPromotion, String promoName) {
+        for (Promotion promo : listPromotion) {
+            if (promo.getPromoCode().equals(promoName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void initializePanelCreateMenu() {
         panelCreateMenu = new JPanel();

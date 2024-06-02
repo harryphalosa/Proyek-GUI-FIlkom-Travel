@@ -22,6 +22,15 @@ public class FilkomTravel extends JFrame {
     private JPanel panelCetak;
     private JPanel panelPrintHistory;
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new FilkomTravel().setVisible(true);
+            }
+        });
+    }
+
     public FilkomTravel() {
         frame = this;
         setTitle("Filkom Travel");
@@ -829,14 +838,5 @@ public class FilkomTravel extends JFrame {
         frame.getContentPane().add(panel);
         frame.repaint();
         frame.revalidate();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FilkomTravel().setVisible(true);
-            }
-        });
     }
 }

@@ -1,5 +1,16 @@
 package GrapichalUI;
 
+import core.*;
+import core.customer.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +33,7 @@ public class FilkomTravel extends JFrame {
     private JPanel panelCheckOut;
     private JPanel panelCetak;
     private JPanel panelPrintHistory;
-
+    ArrayList<Customer> listCustomer = new ArrayList<>();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -30,6 +41,14 @@ public class FilkomTravel extends JFrame {
                 new FilkomTravel().setVisible(true);
             }
         });
+    }
+    public boolean isIDExist(ArrayList<Customer> listCustomer, String id){
+        for(Customer customer : listCustomer){
+            if(customer.getId().equals(id)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public FilkomTravel() {
@@ -56,6 +75,7 @@ public class FilkomTravel extends JFrame {
         initializePanelCheckOut();
         initializePanelCetak();
         initializePanelPrintHistory();
+        
 
         add(mainPanel, "MainPanel");
         add(panel1, "Panel1");
@@ -241,18 +261,18 @@ public class FilkomTravel extends JFrame {
     private void initializePanelCreateGuest() {
         panelCreateGuest = new JPanel();
         panelCreateGuest.setLayout(new BorderLayout());
-
+    
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+    
         JLabel idLabel = new JLabel("ID:");
         JTextField idField = new JTextField();
         JLabel saldoLabel = new JLabel("Saldo Awal:");
         JTextField saldoField = new JTextField();
-
+    
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idLabel)
@@ -260,7 +280,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idField)
                         .addComponent(saldoField)));
-
+    
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idLabel)
@@ -268,11 +288,34 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(saldoLabel)
                         .addComponent(saldoField)));
-
+    
         panelCreateGuest.add(centerPanel, BorderLayout.CENTER);
-
+    
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Mengambil nilai ID dan saldo dari field
+                String id = idField.getText();
+                int saldo = Integer.parseInt(saldoField.getText());
+    
+                // Mengecek apakah ID sudah ada dalam listCustomer
+                boolean isExisting = isIDExist(listCustomer, id);
+    
+                // Jika ID sudah ada, tampilkan pop-up "CREATE GUEST FAILED"
+                if (isExisting) {
+                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST FAILED: " + id + " IS EXISTS");
+                } else {
+                    // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan pop-up "CREATE GUEST SUCCESS"
+                    listCustomer.add(new Guest(id, saldo));
+                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST SUCCESS: " + id);
+                }
+            }
+        });
+        bottomPanel.add(addButton);
+    
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -281,17 +324,11 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        JButton createButton = new JButton("Create");
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Logic for creating guest
-            }
-        });
         bottomPanel.add(backButton);
-        bottomPanel.add(createButton);
+    
         panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }
+    
 
     private void initializePanel2() {
         panel2 = new JPanel();

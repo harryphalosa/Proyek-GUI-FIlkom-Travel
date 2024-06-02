@@ -448,21 +448,21 @@ public class FilkomTravel extends JFrame {
     private void initializePanelTopUp() {
         panelTopUp = new JPanel();
         panelTopUp.setLayout(new BorderLayout());
-
+    
         JLabel panelTopUpLabel = new JLabel("Panel Top Up", SwingConstants.CENTER);
         panelTopUp.add(panelTopUpLabel, BorderLayout.NORTH);
-
+    
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+    
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
         JTextField idPemesanField = new JTextField();
         JLabel nominalTopUpLabel = new JLabel("Nominal Top Up:");
         JTextField nominalTopUpField = new JTextField();
-
+    
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idPemesanLabel)
@@ -470,7 +470,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idPemesanField)
                         .addComponent(nominalTopUpField)));
-
+    
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idPemesanLabel)
@@ -478,20 +478,49 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(nominalTopUpLabel)
                         .addComponent(nominalTopUpField)));
-
+    
         panelTopUp.add(centerPanel, BorderLayout.CENTER);
-
+    
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton simpanButton = new JButton("Simpan");
         simpanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for saving top-up information
+                String topUpOrderID = idPemesanField.getText();
+                int topUpBudget = Integer.parseInt(nominalTopUpField.getText());
+    
+                // Logika untuk memeriksa apakah pelanggan ada dalam daftar
+                boolean isCustomerExist = false;
+                Customer foundCustomer = null;
+                for (Customer customer : listCustomer) {
+                    if (customer.getId().equals(topUpOrderID)) {
+                        isCustomerExist = true;
+                        foundCustomer = customer;
+                        break;
+                    }
+                }
+    
+                if (isCustomerExist) {
+                    // Logika untuk mengupdate saldo pelanggan
+                    int initBalance = foundCustomer.getBalance();
+                    foundCustomer.updateBalance(topUpBudget);
+    
+                    // Mencetak pesan keberhasilan top-up sebagai dialog popup
+                    if (foundCustomer instanceof Member) {
+                        Member member = (Member) foundCustomer;
+                        JOptionPane.showMessageDialog(panelTopUp, String.format("TOPUP SUCCESS: %s %d => %d", member.getMemberName(), initBalance, member.getBalance()));
+                    } else if (foundCustomer instanceof Guest) {
+                        Guest guest = (Guest) foundCustomer;
+                        JOptionPane.showMessageDialog(panelTopUp, String.format("TOPUP SUCCESS: GUEST %d => %d", initBalance, guest.getBalance()));
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(panelTopUp, "TOPUP FAILED: NON EXISTENT CUSTOMER");
+                }
             }
         });
         bottomPanel.add(simpanButton);
-
+    
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -501,7 +530,7 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
-
+    
         panelTopUp.add(bottomPanel, BorderLayout.SOUTH);
     }
 

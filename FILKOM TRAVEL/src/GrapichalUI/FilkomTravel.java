@@ -335,8 +335,8 @@ public class FilkomTravel extends JFrame {
         });
 
         bottomPanel.add(backButton);
-        bottomPanel.add(createButton);
         bottomPanel.add(clearButton);
+        bottomPanel.add(createButton);
         panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);
     }
 
@@ -379,8 +379,8 @@ public class FilkomTravel extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JButton addButton = new JButton("Add");
-        addButton.addActionListener(new ActionListener() {
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Mengambil nilai ID dan saldo dari field
@@ -423,7 +423,7 @@ public class FilkomTravel extends JFrame {
         });
         bottomPanel.add(backButton);
         bottomPanel.add(clearButton);
-        bottomPanel.add(addButton);
+        bottomPanel.add(createButton);
 
         panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }

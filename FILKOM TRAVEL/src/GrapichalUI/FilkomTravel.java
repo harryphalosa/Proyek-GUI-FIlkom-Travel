@@ -448,7 +448,23 @@ public class FilkomTravel extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Your create guest logic here
+                // Mengambil nilai ID dan saldo dari field
+                String id = idField.getText();
+                int saldo = Integer.parseInt(saldoField.getText());
+                // Mengecek apakah ID sudah ada dalam listCustomer
+                boolean isExisting = isIDExist(arrayListCustomer, id);
+                // Jika ID sudah ada, tampilkan pop-up "CREATE GUEST FAILED"
+                if (isExisting) {
+                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST FAILED: " + id + " IS EXISTS");
+                } else {
+                    // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan
+                    // pop-up "CREATE GUEST SUCCESS"
+                    Guest newGuest = new Guest(id, saldo);
+                    arrayListCustomer.add(newGuest);
+                    listGuest.addElement(newGuest);
+                    guestList.setModel(listGuest);
+                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST SUCCESS: " + id);
+                }
             }
         });
         JButton clearButton = new JButton("Clear");

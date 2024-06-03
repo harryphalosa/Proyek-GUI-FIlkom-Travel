@@ -583,8 +583,8 @@ public class FilkomTravel extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+        JButton topUpButton = new JButton("Top up");
+        topUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String topUpOrderID = idPemesanField.getText();
@@ -621,7 +621,6 @@ public class FilkomTravel extends JFrame {
                 }
             }
         });
-        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -631,7 +630,18 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
+
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                idPemesanField.setText("");
+                nominalTopUpField.setText("");
+            }
+        });
         bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
+        bottomPanel.add(topUpButton);
 
         panelTopUp.add(bottomPanel, BorderLayout.SOUTH);
     }
@@ -736,8 +746,8 @@ public class FilkomTravel extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Mendapatkan nilai dari JTextField langsung
@@ -768,15 +778,19 @@ public class FilkomTravel extends JFrame {
 
                 // Logika untuk menyimpan informasi promo
                 if (!isPromoExist(arrayListPromotion, promoName)) {
+                    Promotion newPromo = null;
                     if (selectedPromoType.equals("CASHBACK")) {
-                        arrayListPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
-                                maksPotongan, minPembelian));
+                        newPromo = new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                                maksPotongan, minPembelian);
                         JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK SUCCESS: " + promoName);
                     } else if (selectedPromoType.equals("DISCOUNT")) {
-                        arrayListPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
-                                maksPotongan, minPembelian));
+                        newPromo = new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                                maksPotongan, minPembelian);
                         JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT SUCCESS: " + promoName);
                     }
+                    arrayListPromotion.add(newPromo);
+                    listPromo.addElement(newPromo);
+                    promoList.setModel(listPromo);
                 } else {
                     if (selectedPromoType.equals("CASHBACK")) {
                         JOptionPane.showMessageDialog(panelCreatePromo,
@@ -788,7 +802,6 @@ public class FilkomTravel extends JFrame {
                 }
             }
         });
-        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -798,7 +811,26 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                promoTypeGroup.clearSelection();
+                promoNameField.setText("");
+                persenPotonganField.setText("");
+                tanggalAwalComboBox.setSelectedIndex(0);
+                bulanAwalComboBox.setSelectedIndex(0);
+                tahunAwalComboBox.setSelectedIndex(0);
+                tanggalAkhirComboBox.setSelectedIndex(0);
+                bulanAkhirComboBox.setSelectedIndex(0);
+                tahunAkhirComboBox.setSelectedIndex(0);
+                maksPotonganField.setText("");
+                minPembelianField.setText("");
+            }
+        });
         bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
+        bottomPanel.add(createButton);
 
         panelCreatePromo.add(bottomPanel, BorderLayout.SOUTH);
     }

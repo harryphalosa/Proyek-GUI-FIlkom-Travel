@@ -1,6 +1,5 @@
 package core.customer;
 
-
 import core.Order;
 import core.promotion.Discount;
 
@@ -21,10 +20,12 @@ public abstract class Customer {
     protected ArrayList<Order> listOrder = new ArrayList<>();
     protected Map<Integer, ArrayList<Order>> orderHistory = new HashMap<>();
     protected Map<Integer, Integer> subTotalHistory = new HashMap<>();
+    private String string = "";
 
     public Customer(String id, int balance) {
         this.id = id;
         this.balance = balance;
+        this.string = this.getId();
     }
 
     public abstract void makeOrder();
@@ -62,13 +63,15 @@ public abstract class Customer {
                 totalPurchase -= temp.getPricePerDuration() * duration;
                 if (temp.getDuration() <= 0) {
                     listOrder.remove(temp);
-                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " " + temp.getNumberPlate() + " IS REMOVED");
+                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " " + temp.getNumberPlate()
+                            + " IS REMOVED");
                     if (listOrder.isEmpty()) {
                         ordering = false;
                         currentOrderNumber = 0;
                     }
                 } else {
-                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " " + temp.getNumberPlate() + " DURATION IS DECREMENTED");
+                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " " + temp.getNumberPlate()
+                            + " DURATION IS DECREMENTED");
                 }
             }
         } else {
@@ -189,5 +192,15 @@ public abstract class Customer {
 
     public int getCurrentOrderNumber() {
         return currentOrderNumber;
+    }
+
+    @Override
+    public String toString() {
+        return this.string;
+    }
+
+    public void addNameToString(String name) {
+        string += " - ";
+        string += name;
     }
 }

@@ -15,8 +15,8 @@ public class Member extends Customer {
     private Promotion promo;
     private Map<Integer, Promotion> promoHistory = new HashMap<>();
 
-    public Member(String memberID, String memberName, LocalDate date, int memberBalance){
-        super(memberID,memberBalance);
+    public Member(String memberID, String memberName, LocalDate date, int memberBalance) {
+        super(memberID, memberBalance);
         this.memberName = memberName;
         this.date = date;
     }
@@ -60,8 +60,7 @@ public class Member extends Customer {
                             setTotalPurchase(calculateTotalPurchase());
                             Discount tempPromo = (Discount) promo;
                             promoHistory.put(getCurrentOrderNumber(), tempPromo);
-                        }
-                        else if (promotions instanceof CashbackPromo) {
+                        } else if (promotions instanceof CashbackPromo) {
                             promo = (CashbackPromo) promotions;
                             cashback = promo.getPercentOff() / 100.0 * getSubTotal();
                             CashbackPromo tempPromo = (CashbackPromo) promo;

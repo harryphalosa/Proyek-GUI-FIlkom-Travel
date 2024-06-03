@@ -5,8 +5,6 @@ import core.customer.*;
 import core.vehicle.*;
 import core.promotion.*;
 
-
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -85,10 +83,12 @@ public class Main {
                     int minPurchase = Integer.parseInt(data[5]);
                     if (!isPromoExist(listPromotion, promoCode)) {
                         if (inputSplit[2].equals("CASHBACK")) {
-                            listPromotion.add(new CashbackPromo(promoCode, startDate, endDate, percentOff, maxPromoAmount, minPurchase));
+                            listPromotion.add(new CashbackPromo(promoCode, startDate, endDate, percentOff,
+                                    maxPromoAmount, minPurchase));
                             System.out.println("CREATE PROMO CASHBACK SUCCESS: " + promoCode);
                         } else if (inputSplit[2].equals("DISCOUNT")) {
-                            listPromotion.add(new Discount(promoCode, startDate, endDate, percentOff, maxPromoAmount, minPurchase));
+                            listPromotion.add(new Discount(promoCode, startDate, endDate, percentOff, maxPromoAmount,
+                                    minPurchase));
                             System.out.println("CREATE PROMO DISCOUNT SUCCESS: " + promoCode);
                         }
                     } else {
@@ -126,7 +126,9 @@ public class Main {
                             customer.addToCart(newOrder);
                         }
                         listCustomer.add(customer);
-                        System.out.printf("ADD_TO_CART SUCCESS: %d %s %s %s %s\n", addQuantity, (addQuantity > 1 ? "days" : "day"), newOrder.getMenuName(), newOrder.getNumberPlate(), (isUpdated ? "(UPDATED)" : "(NEW)"));
+                        System.out.printf("ADD_TO_CART SUCCESS: %d %s %s %s %s\n", addQuantity,
+                                (addQuantity > 1 ? "days" : "day"), newOrder.getMenuName(), newOrder.getNumberPlate(),
+                                (isUpdated ? "(UPDATED)" : "(NEW)"));
                     } else {
                         System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                     }
@@ -157,7 +159,7 @@ public class Main {
             if (inputSplit[0].equals("APPLY_PROMO")) {
                 String applyOrderID = inputSplit[1];
                 String applyPromoCode = inputSplit[2];
-                if (isCustomerExist(listCustomer, applyOrderID)){
+                if (isCustomerExist(listCustomer, applyOrderID)) {
                     if (isPromoExist(listPromotion, applyPromoCode)) {
                         Customer customer = getCustomer(listCustomer, applyOrderID);
                         if (customer instanceof Member) {
@@ -179,17 +181,18 @@ public class Main {
             if (inputSplit[0].equals("TOPUP")) {
                 String topUpOrderID = inputSplit[1];
                 int topUpBudget = Integer.parseInt(inputSplit[2]);
-                if (isCustomerExist(listCustomer, topUpOrderID)){
+                if (isCustomerExist(listCustomer, topUpOrderID)) {
                     Customer customer = getCustomer(listCustomer, topUpOrderID);
                     if (customer != null) {
                         int initBalance = customer.getBalance();
                         listCustomer.remove(customer);
                         customer.updateBalance(topUpBudget);
                         listCustomer.add(customer);
-                        if (customer instanceof Member){
+                        if (customer instanceof Member) {
                             Member member = (Member) customer;
-                            System.out.printf("TOPUP SUCCESS: %s %d => %d\n", member.getMemberName(), initBalance, member.getBalance());
-                        } else if(customer instanceof Guest){
+                            System.out.printf("TOPUP SUCCESS: %s %d => %d\n", member.getMemberName(), initBalance,
+                                    member.getBalance());
+                        } else if (customer instanceof Guest) {
                             Guest guest = (Guest) customer;
                             System.out.printf("TOPUP SUCCESS: GUEST %d => %d\n", initBalance, guest.getBalance());
                         }
@@ -203,7 +206,7 @@ public class Main {
 
             if (inputSplit[0].equals("CHECK_OUT")) {
                 String checkoutOrderID = inputSplit[1];
-                if (isCustomerExist(listCustomer, checkoutOrderID)){
+                if (isCustomerExist(listCustomer, checkoutOrderID)) {
                     Customer customer = getCustomer(listCustomer, checkoutOrderID);
                     if (!customer.isOrdering()) {
                         System.out.println("CHECK_OUT FAILED");
@@ -244,33 +247,36 @@ public class Main {
         sc.close();
     }
 
-    public static boolean isIDExist(ArrayList<Customer> listCustomer, String id){
-        for(Customer customer : listCustomer){
-            if(customer.getId().equals(id)){
+    public static boolean isIDExist(ArrayList<Customer> listCustomer, String id) {
+        for (Customer customer : listCustomer) {
+            if (customer.getId().equals(id)) {
                 return true;
             }
         }
         return false;
     }
-    public static boolean isMenuIDExist(ArrayList<Order> listOrder, String menuID){
-        for(Order order : listOrder){
-            if(order.getMenuID().equals(menuID)){
+
+    public static boolean isMenuIDExist(ArrayList<Order> listOrder, String menuID) {
+        for (Order order : listOrder) {
+            if (order.getMenuID().equals(menuID)) {
                 return true;
             }
         }
         return false;
     }
-    public static boolean isNumberPlateExist(ArrayList<Order> listOrder, String numberPlate){
-        for(Order order : listOrder){
-            if(order.getVehicle().getvehicleNumber().equals(numberPlate)){
+
+    public static boolean isNumberPlateExist(ArrayList<Order> listOrder, String numberPlate) {
+        for (Order order : listOrder) {
+            if (order.getVehicle().getvehicleNumber().equals(numberPlate)) {
                 return true;
             }
         }
         return false;
     }
-    public static boolean isPromoExist(ArrayList<Promotion> listPromo, String promoCode){
-        for(Promotion promo : listPromo){
-            if(promo.getPromoCode().equals(promoCode)){
+
+    public static boolean isPromoExist(ArrayList<Promotion> listPromo, String promoCode) {
+        for (Promotion promo : listPromo) {
+            if (promo.getPromoCode().equals(promoCode)) {
                 return true;
             }
         }
@@ -295,9 +301,9 @@ public class Main {
         return null;
     }
 
-    public static Order getOrder(ArrayList<Order> listOrder ,String menuID){
-        for(Order order : listOrder){
-            if(order.getMenuID().equals(menuID)){
+    public static Order getOrder(ArrayList<Order> listOrder, String menuID) {
+        for (Order order : listOrder) {
+            if (order.getMenuID().equals(menuID)) {
                 return order;
             }
         }
@@ -321,14 +327,16 @@ public class Main {
                 }
             }
             if (temp.getOrderNumber(listOrder) != 0) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("id-ID"));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy",
+                        Locale.forLanguageTag("id-ID"));
                 System.out.println("Nomor Pesanan: " + temp.getOrderNumber(listOrder));
                 System.out.println("Tanggal Pesanan: " + temp.getCheckOutDate().format(formatter));
             }
             System.out.printf("%3s | %-25s | %4s | %10s \n", "No", "Menu", "Dur.", "Subtotal");
             System.out.println("=====================================================");
             for (Order orders : listOrder) {
-                System.out.printf("%3d | %-25s | %4d | %10s \n", counter, orders.getMenuName(), orders.getDuration(), String.format("%,d", orders.calculatePrice()).replace(",", "."));
+                System.out.printf("%3d | %-25s | %4d | %10s \n", counter, orders.getMenuName(), orders.getDuration(),
+                        String.format("%,d", orders.calculatePrice()).replace(",", "."));
                 System.out.printf("%5s %s - %s\n", " ", orders.getStartDate(), orders.getEndDate());
                 counter++;
             }
@@ -336,22 +344,27 @@ public class Main {
             System.out.printf("%-32s: %17s\n", "Sub Total", String.format("%,d", temp.getSubTotal()).replace(",", "."));
             if (!temp.isOrdering()) {
                 if (temp.isPromoFromHistoryApplied() && temp.getPromoFromHistory() instanceof Discount) {
-                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromoFromHistory().getPromoCode(), String.format("-%,.0f", temp.calculateDiscount()).replace(",", "."));
+                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromoFromHistory().getPromoCode(),
+                            String.format("-%,.0f", temp.calculateDiscount()).replace(",", "."));
                 }
             } else {
                 if (temp.isPromoApplied() && temp.getPromo() instanceof Discount) {
-                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromo().getPromoCode(), String.format("-%,.0f", temp.calculateDiscount()).replace(",", "."));
+                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromo().getPromoCode(),
+                            String.format("-%,.0f", temp.calculateDiscount()).replace(",", "."));
                 }
             }
             System.out.println("=====================================================");
-            System.out.printf("%-32s: %17s\n", "Total", String.format("%,d", temp.calculateTotalPurchase()).replace(",", "."));
+            System.out.printf("%-32s: %17s\n", "Total",
+                    String.format("%,d", temp.calculateTotalPurchase()).replace(",", "."));
             if (!temp.isOrdering()) {
                 if (temp.isPromoFromHistoryApplied() && temp.getPromoFromHistory() instanceof CashbackPromo) {
-                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromoFromHistory().getPromoCode(), String.format("%,.0f", temp.calculateDiscount()).replace(",", "."));
+                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromoFromHistory().getPromoCode(),
+                            String.format("%,.0f", temp.calculateDiscount()).replace(",", "."));
                 }
             } else {
                 if (temp.isPromoApplied() && temp.getPromo() instanceof CashbackPromo) {
-                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromo().getPromoCode(), String.format("%,.0f", temp.calculateDiscount()).replace(",", "."));
+                    System.out.printf("%-32s: %17s\n", "PROMO: " + temp.getPromo().getPromoCode(),
+                            String.format("%,.0f", temp.calculateDiscount()).replace(",", "."));
                 }
             }
             System.out.printf("%-32s: %17s\n", "Saldo", String.format("%,d", temp.getBalance()).replace(",", "."));
@@ -370,21 +383,24 @@ public class Main {
                 }
             }
             if (temp.getOrderNumber(listOrder) != 0) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("id-ID"));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy",
+                        Locale.forLanguageTag("id-ID"));
                 System.out.println("Nomor Pesanan: " + temp.getOrderNumber(listOrder));
                 System.out.println("Tanggal Pesanan: " + temp.getCheckOutDate().format(formatter));
             }
             System.out.printf("%3s | %-25s | %4s | %10s \n", "No", "Menu", "Dur.", "Subtotal");
             System.out.println("=====================================================");
             for (Order orders : listOrder) {
-                System.out.printf("%3d | %-25s | %4d | %10s \n", counter, orders.getMenuName(), orders.getDuration(), String.format("%,d", orders.calculatePrice()).replace(",", "."));
+                System.out.printf("%3d | %-25s | %4d | %10s \n", counter, orders.getMenuName(), orders.getDuration(),
+                        String.format("%,d", orders.calculatePrice()).replace(",", "."));
                 System.out.printf("%5s %s - %s\n", " ", orders.getStartDate(), orders.getEndDate());
                 counter++;
             }
             System.out.println("=====================================================");
             System.out.printf("%-32s: %17s\n", "Sub Total", String.format("%,d", temp.getSubTotal()).replace(",", "."));
             System.out.println("=====================================================");
-            System.out.printf("%-32s: %17s\n", "Total", String.format("%,d", temp.calculateTotalPurchase()).replace(",", "."));
+            System.out.printf("%-32s: %17s\n", "Total",
+                    String.format("%,d", temp.calculateTotalPurchase()).replace(",", "."));
             System.out.printf("%-32s: %17s\n", "Saldo", String.format("%,d", temp.getBalance()).replace(",", "."));
         }
     }
@@ -399,7 +415,8 @@ public class Main {
             System.out.println("Kode Pemesan: " + temp.getId());
             System.out.println("Nama: " + temp.getFirstName());
             System.out.println("Saldo: " + temp.getBalance());
-            System.out.printf("%4s | %10s | %5s | %5s | %8s | %-8s\n", "No", "No. Pesanan", "Motor", "Mobil", "Subtotal", "PROMO");
+            System.out.printf("%4s | %10s | %5s | %5s | %8s | %-8s\n", "No", "No. Pesanan", "Motor", "Mobil",
+                    "Subtotal", "PROMO");
             System.out.println("===========================================================");
             for (Entry<Integer, ArrayList<Order>> orders : orderHistory.entrySet()) {
                 carAmount = 0;
@@ -412,7 +429,11 @@ public class Main {
                         motorAmount++;
                     }
                 }
-                System.out.printf("%4d | %11d | %5d | %5d | %8d | %-8s\n", counter, orders.getKey(), motorAmount, carAmount, temp.getSubTotalFromHistory(orders.getKey()), (temp.getPromoByIndex(orders.getKey()) != null ? temp.getPromoByIndex(orders.getKey()).getPromoCode() : "-"));
+                System.out.printf("%4d | %11d | %5d | %5d | %8d | %-8s\n", counter, orders.getKey(), motorAmount,
+                        carAmount, temp.getSubTotalFromHistory(orders.getKey()),
+                        (temp.getPromoByIndex(orders.getKey()) != null
+                                ? temp.getPromoByIndex(orders.getKey()).getPromoCode()
+                                : "-"));
                 counter++;
             }
             System.out.println("===========================================================");
@@ -422,7 +443,8 @@ public class Main {
             System.out.println("Kode Pemesan: " + temp.getId());
             System.out.println("Nama: NON_MEMBER");
             System.out.println("Saldo: " + temp.getBalance());
-            System.out.printf("%4s | %10s | %5s | %5s | %8s | %-8s\n", "No", "No. Pesanan", "Motor", "Mobil", "Subtotal", "PROMO");
+            System.out.printf("%4s | %10s | %5s | %5s | %8s | %-8s\n", "No", "No. Pesanan", "Motor", "Mobil",
+                    "Subtotal", "PROMO");
             System.out.println("===========================================================");
             for (Entry<Integer, ArrayList<Order>> orders : orderHistory.entrySet()) {
                 ArrayList<Order> order = orders.getValue();
@@ -433,7 +455,8 @@ public class Main {
                         motorAmount++;
                     }
                 }
-                System.out.printf("%4d | %11d | %5d | %5d | %8d | %-8s\n", counter, orders.getKey(), motorAmount, carAmount, temp.getSubTotal(), "-");
+                System.out.printf("%4d | %11d | %5d | %5d | %8d | %-8s\n", counter, orders.getKey(), motorAmount,
+                        carAmount, temp.getSubTotal(), "-");
                 counter++;
             }
             System.out.println("===========================================================");

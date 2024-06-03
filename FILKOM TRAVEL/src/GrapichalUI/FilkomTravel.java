@@ -39,6 +39,11 @@ public class FilkomTravel extends JFrame {
     private JPanel panelPrintHistory;
     ArrayList<Customer> listCustomer = new ArrayList<>();
     ArrayList<Promotion> listPromotion = new ArrayList<>();
+    JList<String> guestList = new JList<>(new String[] { "No guests registered yet" });
+    JList<String> memberList = new JList<>(new String[] { "No members registered yet" });
+    DefaultListModel listMember = new DefaultListModel<>();
+    DefaultListModel listGuest = new DefaultListModel<>();
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -47,9 +52,10 @@ public class FilkomTravel extends JFrame {
             }
         });
     }
-    public boolean isIDExist(ArrayList<Customer> listCustomer, String id){
-        for(Customer customer : listCustomer){
-            if(customer.getId().equals(id)){
+
+    public boolean isIDExist(ArrayList<Customer> listCustomer, String id) {
+        for (Customer customer : listCustomer) {
+            if (customer.getId().equals(id)) {
                 return true;
             }
         }
@@ -80,7 +86,6 @@ public class FilkomTravel extends JFrame {
         initializePanelCheckOut();
         initializePanelCetak();
         initializePanelPrintHistory();
-        
 
         add(mainPanel, "MainPanel");
         add(panel1, "Panel1");
@@ -135,11 +140,10 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateContainerGaps(true);
 
         JLabel guestLabel = new JLabel("Guest List", SwingConstants.CENTER);
-        JList<String> guestList = new JList<>(new String[] { "Guest 1", "Guest 2", "Guest 3" });
+
         JScrollPane guestScrollPane = new JScrollPane(guestList);
 
         JLabel memberLabel = new JLabel("Member List", SwingConstants.CENTER);
-        JList<String> memberList = new JList<>(new String[] { "Member 1", "Member 2", "Member 3" });
         JScrollPane memberScrollPane = new JScrollPane(memberList);
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -216,7 +220,8 @@ public class FilkomTravel extends JFrame {
         }
         JComboBox<String> dayComboBox = new JComboBox<>(days);
         // Membuat combo box untuk bulan
-        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
         JComboBox<String> monthComboBox = new JComboBox<>(months);
 
         // Membuat combo box untuk tahun
@@ -240,9 +245,12 @@ public class FilkomTravel extends JFrame {
                         .addComponent(idField)
                         .addComponent(nameField)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(dayComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(monthComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(yearComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addComponent(dayComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(monthComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(yearComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE))
                         .addComponent(saldoField))); // Menambahkan field saldo
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -263,7 +271,7 @@ public class FilkomTravel extends JFrame {
 
         panelCreateMember.add(centerPanel, BorderLayout.CENTER);
 
-                panelCreateMember.add(centerPanel, BorderLayout.CENTER);
+        panelCreateMember.add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -279,54 +287,78 @@ public class FilkomTravel extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            // Mengambil nilai ID, nama, tanggal daftar, dan saldo dari field
-            String memberId = idField.getText();
-            String memberName = nameField.getText();
-            // Mengambil nilai dari combo box tanggal, bulan, dan tahun
-            String day = (String) dayComboBox.getSelectedItem();
-            String month = (String) monthComboBox.getSelectedItem();
-            String year = (String) yearComboBox.getSelectedItem();
+                // Mengambil nilai ID, nama, tanggal daftar, dan saldo dari field
+                String memberId = idField.getText();
+                String memberName = nameField.getText();
+                // Mengambil nilai dari combo box tanggal, bulan, dan tahun
+                String day = (String) dayComboBox.getSelectedItem();
+                String month = (String) monthComboBox.getSelectedItem();
+                String year = (String) yearComboBox.getSelectedItem();
 
-            // Mengonversi nilai tersebut menjadi objek LocalDate
-            String dateString = day + " " + month + " " + year;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
-            LocalDate date = LocalDate.parse(dateString, formatter);
-            int memberBudget = Integer.parseInt(saldoField.getText());
+                // Mengonversi nilai tersebut menjadi objek LocalDate
+                String dateString = day + " " + month + " " + year;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+                LocalDate date = LocalDate.parse(dateString, formatter);
+                int memberBudget = Integer.parseInt(saldoField.getText());
 
-            // Mengecek apakah ID sudah ada dalam listCustomer
-            boolean isExisting = isIDExist(listCustomer, memberId);
+                // Mengecek apakah ID sudah ada dalam listCustomer
+                boolean isExisting = isIDExist(listCustomer, memberId);
 
-            // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
-            if (isExisting) {
-                JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
-            } else {
-                // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan pop-up "CREATE MEMBER SUCCESS"
-                listCustomer.add(new Member(memberId, memberName, date, memberBudget));
-                JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER SUCCESS: " + memberId);
+                // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
+                if (isExisting) {
+                    JOptionPane.showMessageDialog(panelCreateMember,
+                            "CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
+                } else {
+                    // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan
+                    // pop-up "CREATE MEMBER SUCCESS"
+                    Member newMember = new Member(memberId, memberName, date, memberBudget);
+                    listCustomer.add(newMember);
+                    addNameToString(newMember, memberName);
+                    listMember.addElement(newMember);
+                    memberList.setModel(listMember);
+                    JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER SUCCESS: " + memberId);
+                }
             }
-        }
-    });
-        
+        });
+
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                idField.setText("");
+                nameField.setText("");
+                dayComboBox.setSelectedIndex(0);
+                monthComboBox.setSelectedIndex(0);
+                yearComboBox.setSelectedIndex(0);
+                saldoField.setText("");
+            }
+        });
+
         bottomPanel.add(backButton);
         bottomPanel.add(createButton);
+        bottomPanel.add(clearButton);
         panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    private static void addNameToString(Customer customer, String name) {
+        customer.addNameToString(name);
     }
 
     private void initializePanelCreateGuest() {
         panelCreateGuest = new JPanel();
         panelCreateGuest.setLayout(new BorderLayout());
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
+
         JLabel idLabel = new JLabel("ID:");
         JTextField idField = new JTextField();
         JLabel saldoLabel = new JLabel("Saldo Awal:");
         JTextField saldoField = new JTextField();
-    
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idLabel)
@@ -334,7 +366,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idField)
                         .addComponent(saldoField)));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idLabel)
@@ -342,9 +374,9 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(saldoLabel)
                         .addComponent(saldoField)));
-    
+
         panelCreateGuest.add(centerPanel, BorderLayout.CENTER);
-    
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton addButton = new JButton("Add");
@@ -354,22 +386,33 @@ public class FilkomTravel extends JFrame {
                 // Mengambil nilai ID dan saldo dari field
                 String id = idField.getText();
                 int saldo = Integer.parseInt(saldoField.getText());
-    
+
                 // Mengecek apakah ID sudah ada dalam listCustomer
                 boolean isExisting = isIDExist(listCustomer, id);
-    
+
                 // Jika ID sudah ada, tampilkan pop-up "CREATE GUEST FAILED"
                 if (isExisting) {
                     JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST FAILED: " + id + " IS EXISTS");
                 } else {
-                    // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan pop-up "CREATE GUEST SUCCESS"
-                    listCustomer.add(new Guest(id, saldo));
+                    // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan
+                    // pop-up "CREATE GUEST SUCCESS"
+                    Guest newGuest = new Guest(id, saldo);
+                    listCustomer.add(newGuest);
+                    listGuest.addElement(newGuest);
+                    guestList.setModel(listGuest);
                     JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST SUCCESS: " + id);
                 }
             }
         });
-        bottomPanel.add(addButton);
-    
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                idField.setText("");
+                saldoField.setText("");
+            }
+        });
+
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -379,10 +422,11 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
-    
+        bottomPanel.add(clearButton);
+        bottomPanel.add(addButton);
+
         panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }
-    
 
     private void initializePanel2() {
         panel2 = new JPanel();
@@ -452,21 +496,21 @@ public class FilkomTravel extends JFrame {
     private void initializePanelTopUp() {
         panelTopUp = new JPanel();
         panelTopUp.setLayout(new BorderLayout());
-    
+
         JLabel panelTopUpLabel = new JLabel("Panel Top Up", SwingConstants.CENTER);
         panelTopUp.add(panelTopUpLabel, BorderLayout.NORTH);
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
+
         JLabel idPemesanLabel = new JLabel("ID Pemesan:");
         JTextField idPemesanField = new JTextField();
         JLabel nominalTopUpLabel = new JLabel("Nominal Top Up:");
         JTextField nominalTopUpField = new JTextField();
-    
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idPemesanLabel)
@@ -474,7 +518,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idPemesanField)
                         .addComponent(nominalTopUpField)));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idPemesanLabel)
@@ -482,9 +526,9 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(nominalTopUpLabel)
                         .addComponent(nominalTopUpField)));
-    
+
         panelTopUp.add(centerPanel, BorderLayout.CENTER);
-    
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton simpanButton = new JButton("Simpan");
@@ -493,7 +537,7 @@ public class FilkomTravel extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String topUpOrderID = idPemesanField.getText();
                 int topUpBudget = Integer.parseInt(nominalTopUpField.getText());
-    
+
                 // Logika untuk memeriksa apakah pelanggan ada dalam daftar
                 boolean isCustomerExist = false;
                 Customer foundCustomer = null;
@@ -504,19 +548,21 @@ public class FilkomTravel extends JFrame {
                         break;
                     }
                 }
-    
+
                 if (isCustomerExist) {
                     // Logika untuk mengupdate saldo pelanggan
                     int initBalance = foundCustomer.getBalance();
                     foundCustomer.updateBalance(topUpBudget);
-    
+
                     // Mencetak pesan keberhasilan top-up sebagai dialog popup
                     if (foundCustomer instanceof Member) {
                         Member member = (Member) foundCustomer;
-                        JOptionPane.showMessageDialog(panelTopUp, String.format("TOPUP SUCCESS: %s %d => %d", member.getMemberName(), initBalance, member.getBalance()));
+                        JOptionPane.showMessageDialog(panelTopUp, String.format("TOPUP SUCCESS: %s %d => %d",
+                                member.getMemberName(), initBalance, member.getBalance()));
                     } else if (foundCustomer instanceof Guest) {
                         Guest guest = (Guest) foundCustomer;
-                        JOptionPane.showMessageDialog(panelTopUp, String.format("TOPUP SUCCESS: GUEST %d => %d", initBalance, guest.getBalance()));
+                        JOptionPane.showMessageDialog(panelTopUp,
+                                String.format("TOPUP SUCCESS: GUEST %d => %d", initBalance, guest.getBalance()));
                     }
                 } else {
                     JOptionPane.showMessageDialog(panelTopUp, "TOPUP FAILED: NON EXISTENT CUSTOMER");
@@ -524,7 +570,7 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(simpanButton);
-    
+
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -534,7 +580,7 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
-    
+
         panelTopUp.add(bottomPanel, BorderLayout.SOUTH);
     }
 
@@ -555,10 +601,9 @@ public class FilkomTravel extends JFrame {
         JRadioButton cashbackRadioButton = new JRadioButton("Cashback Promo");
         JRadioButton discountRadioButton = new JRadioButton("Discount Promo");
 
-        
-         // Promo name
-         JLabel promoNameLabel = new JLabel("Promo Name:");
-         JTextField promoNameField = new JTextField();
+        // Promo name
+        JLabel promoNameLabel = new JLabel("Promo Name:");
+        JTextField promoNameField = new JTextField();
 
         // Persen Potongan
         JLabel persenPotonganLabel = new JLabel("Persen Potongan:");
@@ -583,60 +628,59 @@ public class FilkomTravel extends JFrame {
         JTextField minPembelianField = new JTextField();
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(cashbackRadioButton)
-                .addComponent(discountRadioButton))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                .addComponent(promoNameLabel)
-                .addComponent(persenPotonganLabel)
-                .addComponent(tanggalAwalLabel)
-                .addComponent(tanggalAkhirLabel)
-                .addComponent(maksPotonganLabel)
-                .addComponent(minPembelianLabel))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(promoNameField)
-                .addComponent(persenPotonganField)
-                .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(cashbackRadioButton)
+                        .addComponent(discountRadioButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(promoNameLabel)
+                        .addComponent(persenPotonganLabel)
+                        .addComponent(tanggalAwalLabel)
+                        .addComponent(tanggalAkhirLabel)
+                        .addComponent(maksPotonganLabel)
+                        .addComponent(minPembelianLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(promoNameField)
+                        .addComponent(persenPotonganField)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(tanggalAwalComboBox)
+                                .addComponent(bulanAwalComboBox)
+                                .addComponent(tahunAwalComboBox))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(tanggalAkhirComboBox)
+                                .addComponent(bulanAkhirComboBox)
+                                .addComponent(tahunAkhirComboBox))
+                        .addComponent(maksPotonganField)
+                        .addComponent(minPembelianField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(cashbackRadioButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(discountRadioButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(promoNameLabel)
+                        .addComponent(promoNameField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(persenPotonganLabel)
+                        .addComponent(persenPotonganField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(tanggalAwalLabel)
                         .addComponent(tanggalAwalComboBox)
                         .addComponent(bulanAwalComboBox)
                         .addComponent(tahunAwalComboBox))
-                .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(tanggalAkhirLabel)
                         .addComponent(tanggalAkhirComboBox)
                         .addComponent(bulanAkhirComboBox)
                         .addComponent(tahunAkhirComboBox))
-                .addComponent(maksPotonganField)
-                .addComponent(minPembelianField)));
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(maksPotonganLabel)
+                        .addComponent(maksPotonganField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(minPembelianLabel)
+                        .addComponent(minPembelianField)));
 
-layout.setVerticalGroup(layout.createSequentialGroup()
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(cashbackRadioButton))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(discountRadioButton))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(promoNameLabel)
-                .addComponent(promoNameField))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(persenPotonganLabel)
-                .addComponent(persenPotonganField))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(tanggalAwalLabel)
-                .addComponent(tanggalAwalComboBox)
-                .addComponent(bulanAwalComboBox)
-                .addComponent(tahunAwalComboBox))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(tanggalAkhirLabel)
-                .addComponent(tanggalAkhirComboBox)
-                .addComponent(bulanAkhirComboBox)
-                .addComponent(tahunAkhirComboBox))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(maksPotonganLabel)
-                .addComponent(maksPotonganField))
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(minPembelianLabel)
-                .addComponent(minPembelianField)));
-
-panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
-
+        panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -644,49 +688,51 @@ panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
         simpanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    // Mendapatkan nilai dari JTextField langsung
-                    String promoName = promoNameField.getText();
-                    LocalDate tanggalAwal = LocalDate.of(
-                            Integer.parseInt((String) tahunAwalComboBox.getSelectedItem()),
-                            bulanAwalComboBox.getSelectedIndex() + 1,
-                            Integer.parseInt((String) tanggalAwalComboBox.getSelectedItem())
-                    );
-                    LocalDate tanggalAkhir = LocalDate.of(
-                            Integer.parseInt((String) tahunAkhirComboBox.getSelectedItem()),
-                            bulanAkhirComboBox.getSelectedIndex() + 1,
-                            Integer.parseInt((String) tanggalAkhirComboBox.getSelectedItem())
-                    );
-                    int maksPotongan = Integer.parseInt(maksPotonganField.getText());
-                    int minPembelian = Integer.parseInt(minPembelianField.getText());
-                    int persenPotongan = Integer.parseInt(persenPotonganField.getText());
-    
-                    // Menentukan jenis promo berdasarkan radio button yang dipilih
-                    String selectedPromoType;
-                    if (cashbackRadioButton.isSelected()) {
-                        selectedPromoType = "CASHBACK";
-                    } else if (discountRadioButton.isSelected()) {
-                        selectedPromoType = "DISCOUNT";
-                    } else {
-                        // Tidak ada radio button yang dipilih
-                        JOptionPane.showMessageDialog(panelCreatePromo, "Pilih jenis promo terlebih dahulu!");
-                        return;
+                // Mendapatkan nilai dari JTextField langsung
+                String promoName = promoNameField.getText();
+                LocalDate tanggalAwal = LocalDate.of(
+                        Integer.parseInt((String) tahunAwalComboBox.getSelectedItem()),
+                        bulanAwalComboBox.getSelectedIndex() + 1,
+                        Integer.parseInt((String) tanggalAwalComboBox.getSelectedItem()));
+                LocalDate tanggalAkhir = LocalDate.of(
+                        Integer.parseInt((String) tahunAkhirComboBox.getSelectedItem()),
+                        bulanAkhirComboBox.getSelectedIndex() + 1,
+                        Integer.parseInt((String) tanggalAkhirComboBox.getSelectedItem()));
+                int maksPotongan = Integer.parseInt(maksPotonganField.getText());
+                int minPembelian = Integer.parseInt(minPembelianField.getText());
+                int persenPotongan = Integer.parseInt(persenPotonganField.getText());
+
+                // Menentukan jenis promo berdasarkan radio button yang dipilih
+                String selectedPromoType;
+                if (cashbackRadioButton.isSelected()) {
+                    selectedPromoType = "CASHBACK";
+                } else if (discountRadioButton.isSelected()) {
+                    selectedPromoType = "DISCOUNT";
+                } else {
+                    // Tidak ada radio button yang dipilih
+                    JOptionPane.showMessageDialog(panelCreatePromo, "Pilih jenis promo terlebih dahulu!");
+                    return;
+                }
+
+                // Logika untuk menyimpan informasi promo
+                if (!isPromoExist(listPromotion, promoName)) {
+                    if (selectedPromoType.equals("CASHBACK")) {
+                        listPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                                maksPotongan, minPembelian));
+                        JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK SUCCESS: " + promoName);
+                    } else if (selectedPromoType.equals("DISCOUNT")) {
+                        listPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                                maksPotongan, minPembelian));
+                        JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT SUCCESS: " + promoName);
                     }
-    
-                    // Logika untuk menyimpan informasi promo
-                    if (!isPromoExist(listPromotion, promoName)) {
-                        if (selectedPromoType.equals("CASHBACK")) {
-                            listPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan, maksPotongan, minPembelian));
-                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK SUCCESS: " + promoName);
-                        } else if (selectedPromoType.equals("DISCOUNT")) {
-                            listPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan, maksPotongan, minPembelian));
-                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT SUCCESS: " + promoName);
-                        }
-                    } else {
-                        if (selectedPromoType.equals("CASHBACK")) {
-                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK FAILED: " + promoName + " IS EXISTS");
-                        } else if (selectedPromoType.equals("DISCOUNT")) {
-                            JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT FAILED: " + promoName + " IS EXISTS");
-                        }
+                } else {
+                    if (selectedPromoType.equals("CASHBACK")) {
+                        JOptionPane.showMessageDialog(panelCreatePromo,
+                                "CREATE PROMO CASHBACK FAILED: " + promoName + " IS EXISTS");
+                    } else if (selectedPromoType.equals("DISCOUNT")) {
+                        JOptionPane.showMessageDialog(panelCreatePromo,
+                                "CREATE PROMO DISCOUNT FAILED: " + promoName + " IS EXISTS");
+                    }
                 }
             }
         });
@@ -713,7 +759,6 @@ panelCreatePromo.add(centerPanel, BorderLayout.CENTER);
         }
         return false;
     }
-
 
     private void initializePanelCreateMenu() {
         panelCreateMenu = new JPanel();

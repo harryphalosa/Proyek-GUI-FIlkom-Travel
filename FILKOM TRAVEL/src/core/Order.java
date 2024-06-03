@@ -18,14 +18,14 @@ public class Order {
         this.menuName = menuName;
         this.vehicle = new Motorcycle(numberPlate, price);
         // jenis kendaran, id, plat, harga
-        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Car";
+        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Motorcycle";
     }
 
     public Order(String menuID, String menuName, String numberPlate, int price, String customType) {
         this.menuID = menuID;
         this.menuName = menuName;
         this.vehicle = new Car(numberPlate, price, customType);
-        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Motorcycle";
+        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Car";
     }
 
     public void setDuration(int duration) {

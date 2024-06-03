@@ -181,12 +181,12 @@ public class FilkomTravel extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
-    
+
         JLabel title = new JLabel("Filkom Travel", SwingConstants.CENTER);
         title.setFont(new Font("Serif", Font.BOLD, 48)); // Atur ukuran font menjadi 48px
-    
+
         mainPanel.add(title, gbc);
-    
+
         gbc.gridy = 1; // Posisi tombol di bawah label
         JButton startButton = new JButton("Start");
         startButton.addActionListener(new ActionListener() {
@@ -196,20 +196,20 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel1");
             }
         });
-    
+
         mainPanel.add(startButton, gbc);
     }
 
     private void initializePanel1() {
         panel1 = new JPanel();
         panel1.setLayout(new BorderLayout());
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
+
         JLabel guestLabel = new JLabel("Guest List", SwingConstants.CENTER);
         JScrollPane guestScrollPane = new JScrollPane(guestList);
         JButton createGuestButton = new JButton("Create Guest");
@@ -220,7 +220,7 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "PanelCreateGuest");
             }
         });
-    
+
         JLabel memberLabel = new JLabel("Member List", SwingConstants.CENTER);
         JScrollPane memberScrollPane = new JScrollPane(memberList);
         JButton createMemberButton = new JButton("Create Member");
@@ -231,7 +231,7 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "PanelCreateMember");
             }
         });
-    
+
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -242,7 +242,7 @@ public class FilkomTravel extends JFrame {
                                 .addComponent(memberLabel)
                                 .addComponent(memberScrollPane, 150, 200, Short.MAX_VALUE)
                                 .addComponent(createMemberButton))));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(guestLabel)
@@ -255,10 +255,11 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(createGuestButton)
                         .addComponent(createMemberButton)));
-    
+
         panel1.add(centerPanel, BorderLayout.CENTER);
-    
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Mengubah posisi tombol "Next" ke kanan bawah
+
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Mengubah posisi tombol "Next" ke kanan
+                                                                           // bawah
         JButton nextButton = new JButton("Next");
         nextButton.setSize(50, 20);
         nextButton.addActionListener(new ActionListener() {
@@ -268,145 +269,144 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
-    
+
         bottomPanel.add(nextButton);
         panel1.add(bottomPanel, BorderLayout.SOUTH);
     }
-    
 
     private void initializePanelCreateMember() {
-    panelCreateMember = new JPanel();
-    panelCreateMember.setLayout(new BorderLayout());
+        panelCreateMember = new JPanel();
+        panelCreateMember.setLayout(new BorderLayout());
 
-    JPanel centerPanel = new JPanel();
-    GroupLayout layout = new GroupLayout(centerPanel);
-    centerPanel.setLayout(layout);
-    layout.setAutoCreateGaps(true);
-    layout.setAutoCreateContainerGaps(true);
+        JPanel centerPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-    JLabel idLabel = new JLabel("ID:");
-    JTextField idField = new JTextField();
-    JLabel nameLabel = new JLabel("Name:");
-    JTextField nameField = new JTextField();
-    JLabel registerDateLabel = new JLabel("Register Date:");
-    String[] days = new String[31];
-    for (int i = 0; i < 31; i++) {
-        days[i] = String.valueOf(i + 1);
-    }
-    JComboBox<String> dayComboBox = new JComboBox<>(days);
-    String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
-            "October", "November", "December" };
-    JComboBox<String> monthComboBox = new JComboBox<>(months);
-    String[] years = new String[100];
-    int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-    for (int i = 0; i < 100; i++) {
-        years[i] = String.valueOf(currentYear - i);
-    }
-    JComboBox<String> yearComboBox = new JComboBox<>(years);
-    JLabel saldoLabel = new JLabel("Saldo:");
-    JTextField saldoField = new JTextField();
-
-    layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(idLabel)
-                    .addComponent(nameLabel)
-                    .addComponent(registerDateLabel)
-                    .addComponent(saldoLabel))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(idField)
-                    .addComponent(nameField)
-                    .addGroup(layout.createSequentialGroup()
-                            .addComponent(dayComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE)
-                            .addComponent(monthComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE)
-                            .addComponent(yearComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE))
-                    .addComponent(saldoField)));
-
-    layout.setVerticalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(idLabel)
-                    .addComponent(idField))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel)
-                    .addComponent(nameField))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(registerDateLabel)
-                    .addComponent(dayComboBox)
-                    .addComponent(monthComboBox)
-                    .addComponent(yearComboBox))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(saldoLabel)
-                    .addComponent(saldoField)));
-
-    panelCreateMember.add(centerPanel, BorderLayout.CENTER);
-
-    JPanel bottomPanel = new JPanel();
-    bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    JButton backButton = new JButton("Back");
-    backButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-            cardLayout.show(getContentPane(), "Panel1");
+        JLabel idLabel = new JLabel("ID:");
+        JTextField idField = new JTextField();
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        JLabel registerDateLabel = new JLabel("Register Date:");
+        String[] days = new String[31];
+        for (int i = 0; i < 31; i++) {
+            days[i] = String.valueOf(i + 1);
         }
-    });
-    JButton clearButton = new JButton("Clear");
-    clearButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            idField.setText("");
-            nameField.setText("");
-            dayComboBox.setSelectedIndex(0);
-            monthComboBox.setSelectedIndex(0);
-            yearComboBox.setSelectedIndex(0);
-            saldoField.setText("");
+        JComboBox<String> dayComboBox = new JComboBox<>(days);
+        String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
+        JComboBox<String> monthComboBox = new JComboBox<>(months);
+        String[] years = new String[100];
+        int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+        for (int i = 0; i < 100; i++) {
+            years[i] = String.valueOf(currentYear - i);
         }
-    });
-    JButton createButton = new JButton("Create");
-    createButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Mengambil nilai ID, nama, tanggal daftar, dan saldo dari field
-            String memberId = idField.getText();
-            String memberName = nameField.getText();
-            // Mengambil nilai dari combo box tanggal, bulan, dan tahun
-            String day = (String) dayComboBox.getSelectedItem();
-            String month = (String) monthComboBox.getSelectedItem();
-            String year = (String) yearComboBox.getSelectedItem();
+        JComboBox<String> yearComboBox = new JComboBox<>(years);
+        JLabel saldoLabel = new JLabel("Saldo:");
+        JTextField saldoField = new JTextField();
 
-            // Mengonversi nilai tersebut menjadi objek LocalDate
-            String dateString = day + " " + month + " " + year;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
-            LocalDate date = LocalDate.parse(dateString, formatter);
-            int memberBudget = Integer.parseInt(saldoField.getText());
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(idLabel)
+                        .addComponent(nameLabel)
+                        .addComponent(registerDateLabel)
+                        .addComponent(saldoLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idField)
+                        .addComponent(nameField)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(dayComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(monthComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(yearComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE))
+                        .addComponent(saldoField)));
 
-            // Mengecek apakah ID sudah ada dalam listCustomer
-            boolean isExisting = isIDExist(arrayListCustomer, memberId);
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idLabel)
+                        .addComponent(idField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(nameLabel)
+                        .addComponent(nameField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(registerDateLabel)
+                        .addComponent(dayComboBox)
+                        .addComponent(monthComboBox)
+                        .addComponent(yearComboBox))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(saldoLabel)
+                        .addComponent(saldoField)));
 
-            // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
-            if (isExisting) {
-                JOptionPane.showMessageDialog(panelCreateMember,
-                        "CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
-            } else {
-                // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan
-                // pop-up "CREATE MEMBER SUCCESS"
-                Member newMember = new Member(memberId, memberName, date, memberBudget);
-                arrayListCustomer.add(newMember);
-                addNameToString(newMember, memberName);
-                listMember.addElement(newMember);
-                memberList.setModel(listMember);
-                JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER SUCCESS: " + memberId);
+        panelCreateMember.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel1");
             }
-        }
-    });
+        });
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                idField.setText("");
+                nameField.setText("");
+                dayComboBox.setSelectedIndex(0);
+                monthComboBox.setSelectedIndex(0);
+                yearComboBox.setSelectedIndex(0);
+                saldoField.setText("");
+            }
+        });
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Mengambil nilai ID, nama, tanggal daftar, dan saldo dari field
+                String memberId = idField.getText();
+                String memberName = nameField.getText();
+                // Mengambil nilai dari combo box tanggal, bulan, dan tahun
+                String day = (String) dayComboBox.getSelectedItem();
+                String month = (String) monthComboBox.getSelectedItem();
+                String year = (String) yearComboBox.getSelectedItem();
 
-    bottomPanel.add(backButton);
-    bottomPanel.add(clearButton);
-    bottomPanel.add(createButton);
-    panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);
-}
+                // Mengonversi nilai tersebut menjadi objek LocalDate
+                String dateString = day + " " + month + " " + year;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+                LocalDate date = LocalDate.parse(dateString, formatter);
+                int memberBudget = Integer.parseInt(saldoField.getText());
+
+                // Mengecek apakah ID sudah ada dalam listCustomer
+                boolean isExisting = isIDExist(arrayListCustomer, memberId);
+
+                // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
+                if (isExisting) {
+                    JOptionPane.showMessageDialog(panelCreateMember,
+                            "CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
+                } else {
+                    // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan
+                    // pop-up "CREATE MEMBER SUCCESS"
+                    Member newMember = new Member(memberId, memberName, date, memberBudget);
+                    arrayListCustomer.add(newMember);
+                    addNameToString(newMember, memberName);
+                    listMember.addElement(newMember);
+                    memberList.setModel(listMember);
+                    JOptionPane.showMessageDialog(panelCreateMember, "CREATE MEMBER SUCCESS: " + memberId);
+                }
+            }
+        });
+
+        bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
+        bottomPanel.add(createButton);
+        panelCreateMember.add(bottomPanel, BorderLayout.SOUTH);
+    }
 
     private static void addNameToString(Customer customer, String name) {
         customer.addNameToString(name);
@@ -415,18 +415,18 @@ public class FilkomTravel extends JFrame {
     private void initializePanelCreateGuest() {
         panelCreateGuest = new JPanel();
         panelCreateGuest.setLayout(new BorderLayout());
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
+
         JLabel idLabel = new JLabel("ID:");
         JTextField idField = new JTextField();
         JLabel saldoLabel = new JLabel("Saldo Awal:");
         JTextField saldoField = new JTextField();
-    
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idLabel)
@@ -434,7 +434,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idField)
                         .addComponent(saldoField)));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idLabel)
@@ -442,9 +442,9 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(saldoLabel)
                         .addComponent(saldoField)));
-    
+
         panelCreateGuest.add(centerPanel, BorderLayout.CENTER);
-    
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         JButton createButton = new JButton("Create");
@@ -462,7 +462,7 @@ public class FilkomTravel extends JFrame {
                 saldoField.setText("");
             }
         });
-    
+
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -474,10 +474,9 @@ public class FilkomTravel extends JFrame {
         bottomPanel.add(backButton);
         bottomPanel.add(clearButton);
         bottomPanel.add(createButton);
-    
+
         panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }
-    
 
     private void initializePanel2() {
         panel2 = new JPanel();
@@ -1232,7 +1231,6 @@ public class FilkomTravel extends JFrame {
                 }
             }
         });
-        bottomPanel.add(addButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -1243,6 +1241,7 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
+        bottomPanel.add(addButton);
 
         panelAddToCart.add(bottomPanel, BorderLayout.SOUTH);
     }

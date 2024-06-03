@@ -76,6 +76,15 @@ public class FilkomTravel extends JFrame {
         return false;
     }
 
+    private boolean isPromoExist(ArrayList<Promotion> listPromotion, String promoName) {
+        for (Promotion promo : listPromotion) {
+            if (promo.getPromoCode().equals(promoName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public FilkomTravel() {
         frame = this;
         setTitle("Filkom Travel");
@@ -833,15 +842,6 @@ public class FilkomTravel extends JFrame {
         bottomPanel.add(createButton);
 
         panelCreatePromo.add(bottomPanel, BorderLayout.SOUTH);
-    }
-
-    private boolean isPromoExist(ArrayList<Promotion> listPromotion, String promoName) {
-        for (Promotion promo : listPromotion) {
-            if (promo.getPromoCode().equals(promoName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void initializePanelCreateMenu() {

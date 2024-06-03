@@ -1301,13 +1301,24 @@ public class FilkomTravel extends JFrame {
         panelCheckOut.add(panelCheckOutLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(3, 2));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JLabel idPemesananLabel = new JLabel("ID Pemesanan:");
-        centerPanel.add(idPemesananLabel);
-
         JTextField idPemesananField = new JTextField();
-        centerPanel.add(idPemesananField);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesananLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(idPemesananField)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(idPemesananLabel)
+                        .addComponent(idPemesananField)));
 
         panelCheckOut.add(centerPanel, BorderLayout.CENTER);
 
@@ -1365,7 +1376,7 @@ public class FilkomTravel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "Panel Print History");
+                cardLayout.show(getContentPane(), "PanelPrintHistory");
             }
         });
         centerPanel.add(finishButton);

@@ -42,16 +42,17 @@ public class FilkomTravel extends JFrame {
     ArrayList<Customer> arrayListCustomer = new ArrayList<>();
     ArrayList<Order> arrayListMenu = new ArrayList<>();
     ArrayList<Promotion> arrayListPromotion = new ArrayList<>();
-    ArrayList<Customer> listCustomer = new ArrayList<>();
-    ArrayList<Order> listOrder = new ArrayList<>();
+    ArrayList<Order> arrayListCart = new ArrayList<>();
     JList<String> guestList = new JList<>(new String[] { "No guests registered yet" });
     JList<String> memberList = new JList<>(new String[] { "No members registered yet" });
     JList<String> promoList = new JList<>(new String[] { "No promo has been registered yet" });
     JList<String> menuList = new JList<>(new String[] { "No menu has been registered yet" });
+    JList<String> cartList = new JList<>(new String[] { "No cart has been registered yet" });
     DefaultListModel listMember = new DefaultListModel<>();
     DefaultListModel listGuest = new DefaultListModel<>();
     DefaultListModel listMenu = new DefaultListModel<>();
     DefaultListModel listPromo = new DefaultListModel<>();
+    DefaultListModel listCart = new DefaultListModel<>();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -72,9 +73,11 @@ public class FilkomTravel extends JFrame {
     }
 
     public static boolean isMenuIDExist(ArrayList<Order> listOrder, String menuID) {
-        for (Order order : listOrder) {
-            if (order.getMenuID().equals(menuID)) {
-                return true;
+        if (listOrder != null && !listOrder.isEmpty()) {
+            for (Order order : listOrder) {
+                if (order.getMenuID().equals(menuID)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -96,8 +99,9 @@ public class FilkomTravel extends JFrame {
             }
         }
         return false;
-        
+
     }
+
     public static boolean isCustomerExist(ArrayList<Customer> customers, String customerID) {
         for (Customer customer : customers) {
             if (customer.getId().equals(customerID)) {
@@ -909,7 +913,7 @@ public class FilkomTravel extends JFrame {
         JTextField menuNameField = new JTextField();
         JLabel numberPlateLabel = new JLabel("Plat Nomor:");
         JTextField numberPlateField = new JTextField();
-        JLabel priceLabel = new JLabel("price:");
+        JLabel priceLabel = new JLabel("Price per day:");
         JTextField priceField = new JTextField();
         JLabel customTypeLabel = new JLabel("Custom Type:");
         JTextField customTypeField = new JTextField();
@@ -1032,32 +1036,31 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel cartListLabel = new JLabel("Cart List:");
-        JList<String> cartList = new JList<>(new String[] { "Cart Item 1", "Cart Item 2", "Cart Item 3" });
+        JLabel cartListLabel = new JLabel("Cart List", SwingConstants.CENTER);
         JScrollPane cartScrollPane = new JScrollPane(cartList);
-        cartScrollPane.setPreferredSize(new Dimension(150, 200));
 
         JLabel appliedPromoListLabel = new JLabel("Applied Promo List:");
         JList<String> appliedPromoList = new JList<>(
                 new String[] { "Applied Promo 1", "Applied Promo 2", "Applied Promo 3" });
         JScrollPane appliedPromoScrollPane = new JScrollPane(appliedPromoList);
-        appliedPromoScrollPane.setPreferredSize(new Dimension(150, 200));
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(cartListLabel)
-                        .addComponent(cartScrollPane))
+                        .addComponent(cartScrollPane, 150, 200, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(appliedPromoListLabel)
-                        .addComponent(appliedPromoScrollPane)));
+                        .addComponent(appliedPromoScrollPane, 150, 200, Short.MAX_VALUE)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(cartListLabel)
-                        .addComponent(appliedPromoListLabel))
+                        .addComponent(appliedPromoListLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(cartScrollPane)
-                        .addComponent(appliedPromoScrollPane)));
+                        .addComponent(appliedPromoScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)));
 
         panel3.add(centerPanel, BorderLayout.CENTER);
 
@@ -1120,56 +1123,57 @@ public class FilkomTravel extends JFrame {
     private void initializePanelAddToCart() {
         panelAddToCart = new JPanel();
         panelAddToCart.setLayout(new BorderLayout());
-    
+
         JLabel panelAddToCartLabel = new JLabel("Panel Add To Cart", SwingConstants.CENTER);
         panelAddToCart.add(panelAddToCartLabel, BorderLayout.NORTH);
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
-        JLabel addOrderIDLabel = new JLabel("Order ID:");
-        JTextField addOrderIDField = new JTextField();
+
+        JLabel customerIDLabel = new JLabel("Customer ID:");
+        JTextField customerIDField = new JTextField();
         JLabel addMenuIDLabel = new JLabel("Menu ID:");
         JTextField addMenuIDField = new JTextField();
         JLabel addQuantityLabel = new JLabel("Quantity:");
         JTextField addQuantityField = new JTextField();
         JLabel addStartLoanDateLabel = new JLabel("Start Loan Date:");
-    
+
         // Combo box for date
         String[] dates = new String[31];
         for (int i = 0; i < 31; i++) {
             dates[i] = String.valueOf(i + 1);
         }
         JComboBox<String> dayComboBox = new JComboBox<>(dates);
-        JComboBox<String> monthComboBox = new JComboBox<>(new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"});
+        JComboBox<String> monthComboBox = new JComboBox<>(new String[] { "January", "February", "March", "April", "May",
+                "June", "July", "August", "September", "October", "November", "December" });
         String[] years = new String[10]; // Change this value to adjust the range of years
         for (int i = 0; i < 10; i++) {
             years[i] = String.valueOf(LocalDate.now().getYear() + i);
         }
         JComboBox<String> yearComboBox = new JComboBox<>(years);
-    
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(addOrderIDLabel)
+                        .addComponent(customerIDLabel)
                         .addComponent(addMenuIDLabel)
                         .addComponent(addQuantityLabel)
                         .addComponent(addStartLoanDateLabel))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(addOrderIDField)
+                        .addComponent(customerIDField)
                         .addComponent(addMenuIDField)
                         .addComponent(addQuantityField)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(dayComboBox)
                                 .addComponent(monthComboBox)
                                 .addComponent(yearComboBox))));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(addOrderIDLabel)
-                        .addComponent(addOrderIDField))
+                        .addComponent(customerIDLabel)
+                        .addComponent(customerIDField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(addMenuIDLabel)
                         .addComponent(addMenuIDField))
@@ -1181,63 +1185,75 @@ public class FilkomTravel extends JFrame {
                         .addComponent(dayComboBox)
                         .addComponent(monthComboBox)
                         .addComponent(yearComboBox)));
-    
+
         panelAddToCart.add(centerPanel, BorderLayout.CENTER);
-    
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            // Ambil input dari field
-            String addOrderID = addOrderIDField.getText();
-            String addMenuID = addMenuIDField.getText();
-            int addQuantity = Integer.parseInt(addQuantityField.getText());
-            LocalDate addStartLoanDate = LocalDate.of(Integer.parseInt((String) yearComboBox.getSelectedItem()),
-                    monthComboBox.getSelectedIndex() + 1, Integer.parseInt((String) dayComboBox.getSelectedItem()));
+                // Ambil input dari field
+                String customerID = customerIDField.getText();
+                String addMenuID = addMenuIDField.getText();
+                int addQuantity = Integer.parseInt(addQuantityField.getText());
+                LocalDate addStartLoanDate = LocalDate.of(Integer.parseInt((String) yearComboBox.getSelectedItem()),
+                        monthComboBox.getSelectedIndex() + 1, Integer.parseInt((String) dayComboBox.getSelectedItem()));
 
-            // Cek apakah pelanggan dan menu tersedia
-            if (isCustomerExist(listCustomer, addOrderID) && isMenuIDExist(arrayListMenu, addMenuID)) {
-                Customer customer = getCustomer(listCustomer, addOrderID);
-                if (customer != null) {
-                    listCustomer.remove(customer);
-                    Order newOrder = getOrder(listOrder, addMenuID);
-                    boolean isUpdated = false;
-                    if (customer.isOrderExist(addMenuID)) {
-                        Order order = customer.getOrder(addMenuID);
-                        if (order != null) {
-                            order.updateDuration(addQuantity);
-                            isUpdated = true;
-                            customer.updateTotalPurchase(addQuantity * order.getPricePerDuration());
-                        }
-                    } else {
-                        newOrder.setBookingDate(addStartLoanDate);
-                        newOrder.setDuration(addQuantity);
-                        customer.addToCart(newOrder);
-                    }
-                    listCustomer.add(customer);
-                    // Tampilkan pesan menggunakan dialog popup tanpa persentase
-                            String message = "ADD_TO_CART SUCCESS: " + addQuantity + " day(s) " + newOrder.getMenuName() + " " + newOrder.getNumberPlate();
-                            if (isUpdated) {
-                                message += " (UPDATED)";
-                            } else {
-                                message += " (NEW)";
+                // Cek apakah pelanggan dan menu tersedia
+                if (isCustomerExist(arrayListCustomer, customerID) && isMenuIDExist(arrayListMenu, addMenuID)) {
+                    Customer customer = getCustomer(arrayListCustomer, customerID);
+                    if (customer != null) {
+                        arrayListCustomer.remove(customer);
+                        Order newOrder = getOrder(arrayListMenu, addMenuID);
+                        boolean isUpdated = false;
+                        Order prevOrder = null;
+                        if (customer.isOrderExist(addMenuID)) {
+                            Order order = customer.getOrder(addMenuID);
+                            if (order != null) {
+                                isUpdated = true;
+                                prevOrder = getOrder(arrayListCart, addMenuID);
+                                customer.updateTotalPurchase(addQuantity * order.getPricePerDuration());
                             }
-                            JOptionPane.showMessageDialog(panelAddToCart, message);
                         } else {
-                            // Tampilkan pesan menggunakan dialog popup jika pelanggan tidak ditemukan
-                            JOptionPane.showMessageDialog(panelAddToCart, "ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                            newOrder.setBookingDate(addStartLoanDate);
+                            newOrder.setDuration(addQuantity);
+                            customer.addToCart(newOrder);
                         }
+                        arrayListCustomer.add(customer);
+                        // Tampilkan pesan menggunakan dialog popup tanpa persentase
+                        String message = "ADD_TO_CART SUCCESS: " + addQuantity + " day(s) " + newOrder.getMenuName()
+                                + " " + newOrder.getNumberPlate();
+                        if (isUpdated) {
+                            arrayListCart.remove(prevOrder);
+                            message += " (UPDATED)";
+                        } else {
+                            message += " (NEW)";
+                        }
+                        arrayListCart.add(newOrder);
+                        listCart.addElement(
+                                "Customer ID : " + customer.getId() + " -- Menu ID : " + newOrder.getMenuID()
+                                        + " -- Duration : " + newOrder.getDuration() + " -- Total Price: "
+                                        + (newOrder.getPricePerDuration() * newOrder.getDuration()));
+                        cartList.setModel(listCart);
+                        JOptionPane.showMessageDialog(panelAddToCart, message);
                     } else {
-                        // Tampilkan pesan menggunakan dialog popup jika pelanggan atau menu tidak ditemukan
-                        JOptionPane.showMessageDialog(panelAddToCart, "ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                        // Tampilkan pesan menggunakan dialog popup jika pelanggan tidak ditemukan
+                        JOptionPane.showMessageDialog(panelAddToCart,
+                                "ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                     }
+                } else {
+                    // Tampilkan pesan menggunakan dialog popup jika pelanggan atau menu tidak
+                    // ditemukan
+                    JOptionPane.showMessageDialog(panelAddToCart,
+                            "ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                 }
-            });
-        bottomPanel.add(simpanButton);
+            }
+        });
+        bottomPanel.add(addButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -1255,76 +1271,107 @@ public class FilkomTravel extends JFrame {
     private void initializePanelRemoveFromCart() {
         panelRemoveFromCart = new JPanel();
         panelRemoveFromCart.setLayout(new BorderLayout());
-    
+
         JLabel panelRemoveFromCartLabel = new JLabel("Panel Remove From Cart", SwingConstants.CENTER);
         panelRemoveFromCart.add(panelRemoveFromCartLabel, BorderLayout.NORTH);
-    
+
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-    
-        JLabel removeOrderIDLabel = new JLabel("Order ID:");
-        JTextField removeOrderIDField = new JTextField();
+
+        JLabel removeCustomerIDLabel = new JLabel("Customer ID:");
+        JTextField removeCustomerIDField = new JTextField();
         JLabel removeMenuIDLabel = new JLabel("Menu ID:");
         JTextField removeMenuIDField = new JTextField();
         JLabel removeQuantityLabel = new JLabel("Quantity:");
         JTextField removeQuantityField = new JTextField();
-    
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(removeOrderIDLabel)
+                        .addComponent(removeCustomerIDLabel)
                         .addComponent(removeMenuIDLabel)
                         .addComponent(removeQuantityLabel))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(removeOrderIDField)
+                        .addComponent(removeCustomerIDField)
                         .addComponent(removeMenuIDField)
                         .addComponent(removeQuantityField)));
-    
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(removeOrderIDLabel)
-                        .addComponent(removeOrderIDField))
+                        .addComponent(removeCustomerIDLabel)
+                        .addComponent(removeCustomerIDField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(removeMenuIDLabel)
                         .addComponent(removeMenuIDField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(removeQuantityLabel)
                         .addComponent(removeQuantityField)));
-    
+
         panelRemoveFromCart.add(centerPanel, BorderLayout.CENTER);
-    
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+
+        JButton removeButton = new JButton("Remove");
+        removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Ambil input dari field
-                String removeOrderID = removeOrderIDField.getText();
+                String removeCustomerID = removeCustomerIDField.getText();
                 String removeMenuID = removeMenuIDField.getText();
                 int removeQuantity = Integer.parseInt(removeQuantityField.getText());
-    
+
                 // Cek apakah pelanggan dan menu tersedia
-                if (isCustomerExist(listCustomer, removeOrderID)) {
-                    Customer customer = getCustomer(listCustomer, removeOrderID);
+                if (isCustomerExist(arrayListCustomer, removeCustomerID)) {
+                    Customer customer = getCustomer(arrayListCustomer, removeCustomerID);
                     if (customer.isOrderExist(removeMenuID)) {
-                        listCustomer.remove(customer);
-                        customer.removeFromCart(removeMenuID, removeQuantity);
-                        listCustomer.add(customer);
+                        arrayListCustomer.remove(customer);
+
+                        Order temp = null;
+                        if (isMenuIDExist(arrayListMenu, removeMenuID)) {
+                            for (Order order : arrayListMenu) {
+                                if (order.getMenuID().equals(removeMenuID)) {
+                                    temp = order;
+                                    break;
+                                }
+                            }
+                            if (temp != null) {
+                                temp.updateDuration(-removeQuantity);
+                                customer.totalPurchase -= temp.getPricePerDuration() * removeQuantity;
+                                if (temp.getDuration() <= 0) {
+                                    arrayListMenu.remove(temp);
+                                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
+                                            + temp.getNumberPlate()
+                                            + " IS REMOVED");
+                                    if (arrayListMenu.isEmpty()) {
+                                        customer.setOrdering(false);
+                                        customer.setCurrentOrderNumber(0);
+                                        ;
+                                    }
+                                } else {
+                                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
+                                            + temp.getNumberPlate()
+                                            + " DURATION IS DECREMENTED");
+                                }
+                            }
+                        } else {
+                            System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                        }
+                        arrayListCustomer.add(customer);
                         JOptionPane.showMessageDialog(panelRemoveFromCart, "REMOVE_FROM_CART SUCCESS");
                     } else {
-                        JOptionPane.showMessageDialog(panelRemoveFromCart, "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                        JOptionPane.showMessageDialog(panelRemoveFromCart,
+                                "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(panelRemoveFromCart, "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                    JOptionPane.showMessageDialog(panelRemoveFromCart,
+                            "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                 }
             }
         });
-        bottomPanel.add(simpanButton);
-    
+
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -1334,10 +1381,10 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
-    
+        bottomPanel.add(removeButton);
+
         panelRemoveFromCart.add(bottomPanel, BorderLayout.SOUTH);
     }
-    
 
     private void initializePanelApplyPromo() {
         panelApplyPromo = new JPanel();

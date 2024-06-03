@@ -13,7 +13,7 @@ public abstract class Customer {
     protected LocalDate checkOutDate;
     private int balance;
     protected boolean ordering = false;
-    private int totalPurchase;
+    public int totalPurchase;
     private int subTotal;
     protected static int orderCounter = 1;
     private int currentOrderNumber;
@@ -115,6 +115,10 @@ public abstract class Customer {
         this.totalPurchase = (int) d;
     }
 
+    public void setOrdering(boolean ordering) {
+        this.ordering = ordering;
+    }
+
     public int calculateTotalPurchase() {
         totalPurchase = 0;
         ArrayList<Order> temp = new ArrayList<>();
@@ -192,6 +196,10 @@ public abstract class Customer {
 
     public int getCurrentOrderNumber() {
         return currentOrderNumber;
+    }
+
+    public void setCurrentOrderNumber(int currentOrderNumber) {
+        this.currentOrderNumber = currentOrderNumber;
     }
 
     @Override

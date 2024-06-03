@@ -1411,14 +1411,13 @@ public class FilkomTravel extends JFrame {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Logic for applying promo
             }
         });
-        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -1429,6 +1428,7 @@ public class FilkomTravel extends JFrame {
             }
         });
         bottomPanel.add(backButton);
+        bottomPanel.add(applyButton);
 
         panelApplyPromo.add(bottomPanel, BorderLayout.SOUTH);
     }

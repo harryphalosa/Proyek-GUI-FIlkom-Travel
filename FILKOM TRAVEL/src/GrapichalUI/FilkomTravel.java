@@ -1039,8 +1039,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
-                cardLayout.show(frame.getContentPane(), "Panel2");
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
         bottomPanel.add(backButton);
@@ -1049,7 +1049,8 @@ public class FilkomTravel extends JFrame {
         addToCartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelAddToCart);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelAddToCart");
             }
         });
         bottomPanel.add(addToCartButton);
@@ -1058,7 +1059,8 @@ public class FilkomTravel extends JFrame {
         removeFromCartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelRemoveFromCart);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelRemoveFromCart");
             }
         });
         bottomPanel.add(removeFromCartButton);
@@ -1067,7 +1069,8 @@ public class FilkomTravel extends JFrame {
         applyPromoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelApplyPromo);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelApplyPromo");
             }
         });
         bottomPanel.add(applyPromoButton);
@@ -1076,8 +1079,8 @@ public class FilkomTravel extends JFrame {
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
-                cardLayout.show(frame.getContentPane(), "PanelCheckOut");
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCheckOut");
             }
         });
         bottomPanel.add(nextButton);
@@ -1144,7 +1147,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel3);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel3");
             }
         });
         bottomPanel.add(backButton);
@@ -1211,7 +1215,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel3);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel3");
             }
         });
         bottomPanel.add(backButton);
@@ -1279,7 +1284,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel3);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel3");
             }
         });
         bottomPanel.add(backButton);
@@ -1312,7 +1318,8 @@ public class FilkomTravel extends JFrame {
         cetakPesananButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelCetak);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCetak");
             }
         });
         bottomPanel.add(cetakPesananButton);
@@ -1324,8 +1331,8 @@ public class FilkomTravel extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
-                cardLayout.show(frame.getContentPane(), "Panel3");
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel3");
             }
         });
         bottomPanel.add(backButton);
@@ -1347,7 +1354,8 @@ public class FilkomTravel extends JFrame {
         backToMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panel2);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel2");
             }
         });
         centerPanel.add(backToMenuButton);
@@ -1356,7 +1364,8 @@ public class FilkomTravel extends JFrame {
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switchPanel(panelPrintHistory);
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "Panel Print History");
             }
         });
         centerPanel.add(finishButton);
@@ -1410,13 +1419,4 @@ public class FilkomTravel extends JFrame {
         }
         return years;
     }
-
-    private void switchPanel(JPanel panel) {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(panel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
 }

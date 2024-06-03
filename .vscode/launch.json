@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FilkomTravel",
+            "request": "launch",
+            "mainClass": "GrapichalUI.FilkomTravel",
+            "projectName": "Proyek-GUI-FIlkom-Travel_4b250a8e"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

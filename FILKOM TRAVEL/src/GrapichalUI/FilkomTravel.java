@@ -176,14 +176,18 @@ public class FilkomTravel extends JFrame {
     }
 
     private void initializeMainPanel() {
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-
+        mainPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+    
         JLabel title = new JLabel("Filkom Travel", SwingConstants.CENTER);
-        mainPanel.add(title, BorderLayout.NORTH);
-
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        title.setFont(new Font("Serif", Font.BOLD, 48)); // Atur ukuran font menjadi 48px
+    
+        mainPanel.add(title, gbc);
+    
+        gbc.gridy = 1; // Posisi tombol di bawah label
         JButton startButton = new JButton("Start");
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -192,35 +196,53 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel1");
             }
         });
-        centerPanel.add(startButton);
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
+    
+        mainPanel.add(startButton, gbc);
     }
 
     private void initializePanel1() {
         panel1 = new JPanel();
         panel1.setLayout(new BorderLayout());
-
+    
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+    
         JLabel guestLabel = new JLabel("Guest List", SwingConstants.CENTER);
         JScrollPane guestScrollPane = new JScrollPane(guestList);
-
+        JButton createGuestButton = new JButton("Create Guest");
+        createGuestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreateGuest");
+            }
+        });
+    
         JLabel memberLabel = new JLabel("Member List", SwingConstants.CENTER);
         JScrollPane memberScrollPane = new JScrollPane(memberList);
-
+        JButton createMemberButton = new JButton("Create Member");
+        createMemberButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                cardLayout.show(getContentPane(), "PanelCreateMember");
+            }
+        });
+    
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(guestLabel)
-                                .addComponent(guestScrollPane, 150, 200, Short.MAX_VALUE))
+                                .addComponent(guestScrollPane, 150, 200, Short.MAX_VALUE)
+                                .addComponent(createGuestButton))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(memberLabel)
-                                .addComponent(memberScrollPane, 150, 200, Short.MAX_VALUE))));
-
+                                .addComponent(memberScrollPane, 150, 200, Short.MAX_VALUE)
+                                .addComponent(createMemberButton))));
+    
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(guestLabel)
@@ -229,33 +251,14 @@ public class FilkomTravel extends JFrame {
                         .addComponent(guestScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                         .addComponent(memberScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.PREFERRED_SIZE)));
-
+                                GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(createGuestButton)
+                        .addComponent(createMemberButton)));
+    
         panel1.add(centerPanel, BorderLayout.CENTER);
-
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton createGuestButton = new JButton("Create Guest");
-        createGuestButton.setSize(50, 20);
-        createGuestButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "PanelCreateGuest");
-            }
-        });
-        bottomPanel.add(createGuestButton);
-
-        JButton createMemberButton = new JButton("Create Member");
-        createMemberButton.setSize(50, 20);
-        createMemberButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "PanelCreateMember");
-            }
-        });
-        bottomPanel.add(createMemberButton);
-
+    
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Mengubah posisi tombol "Next" ke kanan bawah
         JButton nextButton = new JButton("Next");
         nextButton.setSize(50, 20);
         nextButton.addActionListener(new ActionListener() {
@@ -265,10 +268,11 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
-
+    
         bottomPanel.add(nextButton);
         panel1.add(bottomPanel, BorderLayout.SOUTH);
     }
+    
 
     private void initializePanelCreateMember() {
         panelCreateMember = new JPanel();
@@ -1399,8 +1403,8 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel idPemesanLabel = new JLabel("ID Pemesan:");
-        JTextField idPemesanField = new JTextField();
+        JLabel customerIDLabel  = new JLabel("Customer ID:");
+        JTextField customerIDField = new JTextField();
         JLabel kodePromoLabel = new JLabel("Kode Promo:");
         JTextField kodePromoField = new JTextField();
         JLabel promoListLabel = new JLabel("Promo List:");
@@ -1409,18 +1413,18 @@ public class FilkomTravel extends JFrame {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idPemesanLabel)
+                        .addComponent(customerIDLabel)
                         .addComponent(kodePromoLabel)
                         .addComponent(promoListLabel))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idPemesanField)
+                        .addComponent(customerIDField)
                         .addComponent(kodePromoField)
                         .addComponent(promoScrollPane)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(idPemesanLabel)
-                        .addComponent(idPemesanField))
+                        .addComponent(customerIDLabel)
+                        .addComponent(customerIDField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(kodePromoLabel)
                         .addComponent(kodePromoField))
@@ -1437,9 +1441,28 @@ public class FilkomTravel extends JFrame {
         simpanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for applying promo
+                // Ambil input dari field
+            String customerID  = customerIDField.getText();
+            String applyPromoCode = kodePromoField.getText();
+
+            // Cek apakah pelanggan dan kode promo tersedia
+            if (isCustomerExist(arrayListCustomer, customerID) && isPromoExist(arrayListPromotion, applyPromoCode)) {
+                Customer customer = getCustomer(arrayListCustomer, customerID);
+                // Cek apakah pelanggan merupakan Member
+                if (customer instanceof Member) {
+                    Member temp = (Member) customer;
+                    // Apply promo untuk member
+                    temp.applyPromo(arrayListPromotion, applyPromoCode);
+                } else {
+                    // Pelanggan bukan merupakan member
+                    JOptionPane.showMessageDialog(panelApplyPromo, "APPLY_PROMO FAILED: " + applyPromoCode);
+                }
+            } else {
+                // Pelanggan atau promo tidak ditemukan
+                JOptionPane.showMessageDialog(panelApplyPromo, "APPLY_PROMO FAILED: " + applyPromoCode);
             }
-        });
+        }
+    });
         bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");

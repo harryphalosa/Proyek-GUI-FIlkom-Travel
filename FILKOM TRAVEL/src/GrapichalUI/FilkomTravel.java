@@ -37,12 +37,17 @@ public class FilkomTravel extends JFrame {
     private JPanel panelCheckOut;
     private JPanel panelCetak;
     private JPanel panelPrintHistory;
-    ArrayList<Customer> listCustomer = new ArrayList<>();
-    ArrayList<Promotion> listPromotion = new ArrayList<>();
+    ArrayList<Customer> arrayListCustomer = new ArrayList<>();
+    ArrayList<Order> arrayListMenu = new ArrayList<>();
+    ArrayList<Promotion> arrayListPromotion = new ArrayList<>();
     JList<String> guestList = new JList<>(new String[] { "No guests registered yet" });
     JList<String> memberList = new JList<>(new String[] { "No members registered yet" });
+    JList<String> promoList = new JList<>(new String[] { "No promo has been registered yet" });
+    JList<String> menuList = new JList<>(new String[] { "No menu has been registered yet" });
     DefaultListModel listMember = new DefaultListModel<>();
     DefaultListModel listGuest = new DefaultListModel<>();
+    DefaultListModel listMenu = new DefaultListModel<>();
+    DefaultListModel listPromo = new DefaultListModel<>();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -53,9 +58,18 @@ public class FilkomTravel extends JFrame {
         });
     }
 
-    public boolean isIDExist(ArrayList<Customer> listCustomer, String id) {
-        for (Customer customer : listCustomer) {
+    public boolean isIDExist(ArrayList<Customer> arrayListCustomer, String id) {
+        for (Customer customer : arrayListCustomer) {
             if (customer.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isMenuIDExist(ArrayList<Order> listOrder, String menuID) {
+        for (Order order : listOrder) {
+            if (order.getMenuID().equals(menuID)) {
                 return true;
             }
         }
@@ -140,24 +154,29 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateContainerGaps(true);
 
         JLabel guestLabel = new JLabel("Guest List", SwingConstants.CENTER);
-
         JScrollPane guestScrollPane = new JScrollPane(guestList);
 
         JLabel memberLabel = new JLabel("Member List", SwingConstants.CENTER);
         JScrollPane memberScrollPane = new JScrollPane(memberList);
 
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(guestLabel)
-                        .addComponent(guestScrollPane)
-                        .addComponent(memberLabel)
-                        .addComponent(memberScrollPane)));
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(guestLabel)
+                                .addComponent(guestScrollPane, 150, 200, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(memberLabel)
+                                .addComponent(memberScrollPane, 150, 200, Short.MAX_VALUE))));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(guestLabel)
-                .addComponent(guestScrollPane)
-                .addComponent(memberLabel)
-                .addComponent(memberScrollPane));
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(guestLabel)
+                        .addComponent(memberLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(guestScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(memberScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)));
 
         panel1.add(centerPanel, BorderLayout.CENTER);
 
@@ -302,7 +321,7 @@ public class FilkomTravel extends JFrame {
                 int memberBudget = Integer.parseInt(saldoField.getText());
 
                 // Mengecek apakah ID sudah ada dalam listCustomer
-                boolean isExisting = isIDExist(listCustomer, memberId);
+                boolean isExisting = isIDExist(arrayListCustomer, memberId);
 
                 // Jika ID sudah ada, tampilkan pop-up "CREATE MEMBER FAILED"
                 if (isExisting) {
@@ -312,7 +331,7 @@ public class FilkomTravel extends JFrame {
                     // Jika ID belum ada, tambahkan anggota baru ke dalam listCustomer dan tampilkan
                     // pop-up "CREATE MEMBER SUCCESS"
                     Member newMember = new Member(memberId, memberName, date, memberBudget);
-                    listCustomer.add(newMember);
+                    arrayListCustomer.add(newMember);
                     addNameToString(newMember, memberName);
                     listMember.addElement(newMember);
                     memberList.setModel(listMember);
@@ -388,7 +407,7 @@ public class FilkomTravel extends JFrame {
                 int saldo = Integer.parseInt(saldoField.getText());
 
                 // Mengecek apakah ID sudah ada dalam listCustomer
-                boolean isExisting = isIDExist(listCustomer, id);
+                boolean isExisting = isIDExist(arrayListCustomer, id);
 
                 // Jika ID sudah ada, tampilkan pop-up "CREATE GUEST FAILED"
                 if (isExisting) {
@@ -397,7 +416,7 @@ public class FilkomTravel extends JFrame {
                     // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan
                     // pop-up "CREATE GUEST SUCCESS"
                     Guest newGuest = new Guest(id, saldo);
-                    listCustomer.add(newGuest);
+                    arrayListCustomer.add(newGuest);
                     listGuest.addElement(newGuest);
                     guestList.setModel(listGuest);
                     JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST SUCCESS: " + id);
@@ -436,7 +455,10 @@ public class FilkomTravel extends JFrame {
         panel2.add(panel2Label, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        GroupLayout layout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         JButton topUpButton = new JButton("Top Up");
         topUpButton.addActionListener(new ActionListener() {
@@ -446,7 +468,6 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "PanelTopUp");
             }
         });
-        centerPanel.add(topUpButton);
 
         JButton createPromoButton = new JButton("Create Promo");
         createPromoButton.addActionListener(new ActionListener() {
@@ -456,7 +477,6 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "PanelCreatePromo");
             }
         });
-        centerPanel.add(createPromoButton);
 
         JButton createMenuButton = new JButton("Create Menu");
         createMenuButton.addActionListener(new ActionListener() {
@@ -466,7 +486,39 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "PanelCreateMenu");
             }
         });
-        centerPanel.add(createMenuButton);
+
+        JLabel promoLabel = new JLabel("Promo List", SwingConstants.CENTER);
+        JScrollPane promoScrollPane = new JScrollPane(promoList);
+
+        JLabel menuLabel = new JLabel("Menu List", SwingConstants.CENTER);
+        JScrollPane menuScrollPane = new JScrollPane(menuList);
+
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createSequentialGroup()
+                        .addComponent(topUpButton)
+                        .addComponent(createPromoButton)
+                        .addComponent(createMenuButton))
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(promoLabel)
+                                .addComponent(promoScrollPane, 150, 200, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(menuLabel)
+                                .addComponent(menuScrollPane, 150, 200, Short.MAX_VALUE))));
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(topUpButton)
+                        .addComponent(createPromoButton)
+                        .addComponent(createMenuButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(promoLabel)
+                        .addComponent(menuLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(promoScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(menuScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)));
 
         panel2.add(centerPanel, BorderLayout.CENTER);
 
@@ -541,7 +593,7 @@ public class FilkomTravel extends JFrame {
                 // Logika untuk memeriksa apakah pelanggan ada dalam daftar
                 boolean isCustomerExist = false;
                 Customer foundCustomer = null;
-                for (Customer customer : listCustomer) {
+                for (Customer customer : arrayListCustomer) {
                     if (customer.getId().equals(topUpOrderID)) {
                         isCustomerExist = true;
                         foundCustomer = customer;
@@ -715,13 +767,13 @@ public class FilkomTravel extends JFrame {
                 }
 
                 // Logika untuk menyimpan informasi promo
-                if (!isPromoExist(listPromotion, promoName)) {
+                if (!isPromoExist(arrayListPromotion, promoName)) {
                     if (selectedPromoType.equals("CASHBACK")) {
-                        listPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                        arrayListPromotion.add(new CashbackPromo(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
                                 maksPotongan, minPembelian));
                         JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO CASHBACK SUCCESS: " + promoName);
                     } else if (selectedPromoType.equals("DISCOUNT")) {
-                        listPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
+                        arrayListPromotion.add(new Discount(promoName, tanggalAwal, tanggalAkhir, persenPotongan,
                                 maksPotongan, minPembelian));
                         JOptionPane.showMessageDialog(panelCreatePromo, "CREATE PROMO DISCOUNT SUCCESS: " + promoName);
                     }

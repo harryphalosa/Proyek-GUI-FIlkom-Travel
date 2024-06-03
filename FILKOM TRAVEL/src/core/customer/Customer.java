@@ -17,7 +17,7 @@ public abstract class Customer {
     private int subTotal;
     protected static int orderCounter = 1;
     private int currentOrderNumber;
-    protected ArrayList<Order> listOrder = new ArrayList<>();
+    public ArrayList<Order> listOrder = new ArrayList<>();
     protected Map<Integer, ArrayList<Order>> orderHistory = new HashMap<>();
     protected Map<Integer, Integer> subTotalHistory = new HashMap<>();
     private String string = "";

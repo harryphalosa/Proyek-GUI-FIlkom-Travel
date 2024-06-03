@@ -42,17 +42,14 @@ public class FilkomTravel extends JFrame {
     ArrayList<Customer> arrayListCustomer = new ArrayList<>();
     ArrayList<Order> arrayListMenu = new ArrayList<>();
     ArrayList<Promotion> arrayListPromotion = new ArrayList<>();
-    ArrayList<Order> arrayListCart = new ArrayList<>();
     JList<String> guestList = new JList<>(new String[] { "No guests registered yet" });
     JList<String> memberList = new JList<>(new String[] { "No members registered yet" });
     JList<String> promoList = new JList<>(new String[] { "No promo has been registered yet" });
     JList<String> menuList = new JList<>(new String[] { "No menu has been registered yet" });
-    JList<String> cartList = new JList<>(new String[] { "No cart has been registered yet" });
     DefaultListModel listMember = new DefaultListModel<>();
     DefaultListModel listGuest = new DefaultListModel<>();
     DefaultListModel listMenu = new DefaultListModel<>();
     DefaultListModel listPromo = new DefaultListModel<>();
-    DefaultListModel listCart = new DefaultListModel<>();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -1014,9 +1011,6 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel cartListLabel = new JLabel("Cart List", SwingConstants.CENTER);
-        JScrollPane cartScrollPane = new JScrollPane(cartList);
-
         JLabel appliedPromoListLabel = new JLabel("Applied Promo List:");
         JList<String> appliedPromoList = new JList<>(
                 new String[] { "Applied Promo 1", "Applied Promo 2", "Applied Promo 3" });
@@ -1024,19 +1018,14 @@ public class FilkomTravel extends JFrame {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(cartListLabel)
-                        .addComponent(cartScrollPane, 150, 200, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(appliedPromoListLabel)
                         .addComponent(appliedPromoScrollPane, 150, 200, Short.MAX_VALUE)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(cartListLabel)
                         .addComponent(appliedPromoListLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(cartScrollPane)
                         .addComponent(appliedPromoScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)));
 
@@ -1193,7 +1182,6 @@ public class FilkomTravel extends JFrame {
                             Order order = customer.getOrder(addMenuID);
                             if (order != null) {
                                 isUpdated = true;
-                                prevOrder = getOrder(arrayListCart, addMenuID);
                                 customer.updateTotalPurchase(addQuantity * order.getPricePerDuration());
                             }
                         } else {
@@ -1206,17 +1194,11 @@ public class FilkomTravel extends JFrame {
                         String message = "ADD_TO_CART SUCCESS: " + addQuantity + " day(s) " + newOrder.getMenuName()
                                 + " " + newOrder.getNumberPlate();
                         if (isUpdated) {
-                            arrayListCart.remove(prevOrder);
+                            customer.listOrder.remove(prevOrder);
                             message += " (UPDATED)";
                         } else {
                             message += " (NEW)";
                         }
-                        arrayListCart.add(newOrder);
-                        listCart.addElement(
-                                "Customer ID : " + customer.getId() + " -- Menu ID : " + newOrder.getMenuID()
-                                        + " -- Duration : " + newOrder.getDuration() + " -- Total Price: "
-                                        + (newOrder.getPricePerDuration() * newOrder.getDuration()));
-                        cartList.setModel(listCart);
                         JOptionPane.showMessageDialog(panelAddToCart, message);
                     } else {
                         // Tampilkan pesan menggunakan dialog popup jika pelanggan tidak ditemukan
@@ -1308,22 +1290,24 @@ public class FilkomTravel extends JFrame {
                         arrayListCustomer.remove(customer);
 
                         Order temp = null;
-                        if (isMenuIDExist(arrayListMenu, removeMenuID)) {
-                            for (Order order : arrayListMenu) {
+                        if (isMenuIDExist(customer.listOrder, removeMenuID)) {
+                            for (Order order : customer.listOrder) {
                                 if (order.getMenuID().equals(removeMenuID)) {
                                     temp = order;
                                     break;
                                 }
                             }
                             if (temp != null) {
+                                int prevDuration = temp.getDuration();
                                 temp.updateDuration(-removeQuantity);
                                 customer.totalPurchase -= temp.getPricePerDuration() * removeQuantity;
                                 if (temp.getDuration() <= 0) {
-                                    arrayListMenu.remove(temp);
-                                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
-                                            + temp.getNumberPlate()
-                                            + " IS REMOVED");
-                                    if (arrayListMenu.isEmpty()) {
+                                    customer.listOrder.remove(temp);
+                                    JOptionPane.showMessageDialog(panelRemoveFromCart,
+                                            "REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
+                                                    + temp.getNumberPlate()
+                                                    + " IS REMOVED");
+                                    if (customer.listOrder.isEmpty()) {
                                         customer.setOrdering(false);
                                         customer.setCurrentOrderNumber(0);
                                         ;

@@ -878,9 +878,9 @@ public class FilkomTravel extends JFrame {
 
         JRadioButton MobilRadioButton = new JRadioButton("Mobil(Car)");
         JRadioButton MotorRadioButton = new JRadioButton("Motor(Motorcycle)");
-        ButtonGroup promoTypeGroup = new ButtonGroup();
-        promoTypeGroup.add(MobilRadioButton);
-        promoTypeGroup.add(MotorRadioButton);
+        ButtonGroup vehicleTypeGroup = new ButtonGroup();
+        vehicleTypeGroup.add(MobilRadioButton);
+        vehicleTypeGroup.add(MotorRadioButton);
 
         JLabel idMenuLabel = new JLabel("ID Menu:");
         JTextField idMenuField = new JTextField();
@@ -992,8 +992,20 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
-
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vehicleTypeGroup.clearSelection();
+                idMenuField.setText("");
+                menuNameField.setText("");
+                numberPlateField.setText("");
+                priceField.setText("");
+                customTypeField.setText("");
+            }
+        });
         bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
         bottomPanel.add(createButton);
         panelCreateMenu.add(bottomPanel, BorderLayout.SOUTH);
     }
@@ -1222,7 +1234,20 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel3");
             }
         });
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerIDField.setText("");
+                addMenuIDField.setText("");
+                addQuantityField.setText("");
+                dayComboBox.setSelectedIndex(0);
+                monthComboBox.setSelectedIndex(0);
+                yearComboBox.setSelectedIndex(0);
+            }
+        });
         bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
         bottomPanel.add(addButton);
 
         panelAddToCart.add(bottomPanel, BorderLayout.SOUTH);
@@ -1313,16 +1338,17 @@ public class FilkomTravel extends JFrame {
                                         ;
                                     }
                                 } else {
-                                    System.out.println("REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
-                                            + temp.getNumberPlate()
-                                            + " DURATION IS DECREMENTED");
+                                    JOptionPane.showMessageDialog(panelRemoveFromCart,
+                                            "REMOVE_FROM_CART SUCCESS: " + temp.getMenuName() + " "
+                                                    + temp.getNumberPlate()
+                                                    + " DURATION IS DECREMENTED");
                                 }
                             }
                         } else {
-                            System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                            JOptionPane.showMessageDialog(panelRemoveFromCart,
+                                    "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                         }
                         arrayListCustomer.add(customer);
-                        JOptionPane.showMessageDialog(panelRemoveFromCart, "REMOVE_FROM_CART SUCCESS");
                     } else {
                         JOptionPane.showMessageDialog(panelRemoveFromCart,
                                 "REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
@@ -1342,7 +1368,18 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel3");
             }
         });
+
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeCustomerIDField.setText("");
+                removeMenuIDField.setText("");
+                removeQuantityField.setText("");
+            }
+        });
         bottomPanel.add(backButton);
+        bottomPanel.add(clearButton);
         bottomPanel.add(removeButton);
 
         panelRemoveFromCart.add(bottomPanel, BorderLayout.SOUTH);

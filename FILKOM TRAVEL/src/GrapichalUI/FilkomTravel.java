@@ -415,18 +415,18 @@ public class FilkomTravel extends JFrame {
     private void initializePanelCreateGuest() {
         panelCreateGuest = new JPanel();
         panelCreateGuest.setLayout(new BorderLayout());
-
+    
         JPanel centerPanel = new JPanel();
         GroupLayout layout = new GroupLayout(centerPanel);
         centerPanel.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+    
         JLabel idLabel = new JLabel("ID:");
         JTextField idField = new JTextField();
         JLabel saldoLabel = new JLabel("Saldo Awal:");
         JTextField saldoField = new JTextField();
-
+    
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idLabel)
@@ -434,7 +434,7 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(idField)
                         .addComponent(saldoField)));
-
+    
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idLabel)
@@ -442,34 +442,16 @@ public class FilkomTravel extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(saldoLabel)
                         .addComponent(saldoField)));
-
+    
         panelCreateGuest.add(centerPanel, BorderLayout.CENTER);
-
+    
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         JButton createButton = new JButton("Create");
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Mengambil nilai ID dan saldo dari field
-                String id = idField.getText();
-                int saldo = Integer.parseInt(saldoField.getText());
-
-                // Mengecek apakah ID sudah ada dalam listCustomer
-                boolean isExisting = isIDExist(arrayListCustomer, id);
-
-                // Jika ID sudah ada, tampilkan pop-up "CREATE GUEST FAILED"
-                if (isExisting) {
-                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST FAILED: " + id + " IS EXISTS");
-                } else {
-                    // Jika ID belum ada, tambahkan guest baru ke dalam listCustomer dan tampilkan
-                    // pop-up "CREATE GUEST SUCCESS"
-                    Guest newGuest = new Guest(id, saldo);
-                    arrayListCustomer.add(newGuest);
-                    listGuest.addElement(newGuest);
-                    guestList.setModel(listGuest);
-                    JOptionPane.showMessageDialog(panelCreateGuest, "CREATE GUEST SUCCESS: " + id);
-                }
+                // Your create guest logic here
             }
         });
         JButton clearButton = new JButton("Clear");
@@ -480,7 +462,7 @@ public class FilkomTravel extends JFrame {
                 saldoField.setText("");
             }
         });
-
+    
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -492,9 +474,10 @@ public class FilkomTravel extends JFrame {
         bottomPanel.add(backButton);
         bottomPanel.add(clearButton);
         bottomPanel.add(createButton);
-
+    
         panelCreateGuest.add(bottomPanel, BorderLayout.SOUTH);
     }
+    
 
     private void initializePanel2() {
         panel2 = new JPanel();

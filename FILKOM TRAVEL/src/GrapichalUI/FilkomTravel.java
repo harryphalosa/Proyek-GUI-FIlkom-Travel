@@ -5,6 +5,8 @@ import core.customer.*;
 import core.promotion.CashbackPromo;
 import core.promotion.Discount;
 import core.promotion.Promotion;
+import core.vehicle.Car;
+import core.vehicle.Vehicle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -79,6 +81,15 @@ public class FilkomTravel extends JFrame {
     private boolean isPromoExist(ArrayList<Promotion> listPromotion, String promoName) {
         for (Promotion promo : listPromotion) {
             if (promo.getPromoCode().equals(promoName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isNumberPlateExist(ArrayList<Order> listOrder, String numberPlate) {
+        for (Order order : listOrder) {
+            if (order.getVehicle().getvehicleNumber().equals(numberPlate)) {
                 return true;
             }
         }
@@ -857,6 +868,12 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        JRadioButton MobilRadioButton = new JRadioButton("Mobil(Car)");
+        JRadioButton MotorRadioButton = new JRadioButton("Motor(Motorcycle)");
+        ButtonGroup promoTypeGroup = new ButtonGroup();
+        promoTypeGroup.add(MobilRadioButton);
+        promoTypeGroup.add(MotorRadioButton);
+
         JLabel idMenuLabel = new JLabel("ID Menu:");
         JTextField idMenuField = new JTextField();
         JLabel namaMenuLabel = new JLabel("Nama Menu:");
@@ -869,6 +886,9 @@ public class FilkomTravel extends JFrame {
         JTextField customTypeField = new JTextField();
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(MobilRadioButton)
+                        .addComponent(MotorRadioButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(idMenuLabel)
                         .addComponent(namaMenuLabel)
@@ -883,6 +903,10 @@ public class FilkomTravel extends JFrame {
                         .addComponent(customTypeField)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(MobilRadioButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(MotorRadioButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(idMenuLabel)
                         .addComponent(idMenuField))
@@ -903,14 +927,54 @@ public class FilkomTravel extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JButton simpanButton = new JButton("Simpan");
-        simpanButton.addActionListener(new ActionListener() {
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for saving menu information
+                // text field
+                String idMenu = idMenuField.getText();
+                String namaMenu = namaMenuField.getText();
+                String platNomor = platNomorField.getText();
+                int harga = Integer.parseInt(hargaField.getText());
+                String customType = customTypeField.getText();
+
+                // radio button
+                String selectedVehicleType;
+                if (MobilRadioButton.isSelected()) {
+                    selectedVehicleType = "MOBIL";
+                } else if (MotorRadioButton.isSelected()) {
+                    selectedVehicleType = "MOTOR";
+                } else {
+                    // Tidak ada radio button yang dipilih
+                    JOptionPane.showMessageDialog(panelCreatePromo, "Pilih jenis kendaraan terlebih dahulu!");
+                    return;
+                }
+
+                if (isMenuIDExist(arrayListMenu, idMenu)) {
+                    JOptionPane.showMessageDialog(panelCreateMenu, "CREATE MENU FAILED: " + idMenu + " IS EXISTS");
+                } else if (isNumberPlateExist(arrayListMenu, platNomor)) {
+                    JOptionPane.showMessageDialog(panelCreateMenu, "CREATE MENU FAILED: " + platNomor + " IS EXISTS");
+                } else {
+                    Order newOrder = null;
+                    if (selectedVehicleType.equals("MOBIL")) {
+                        if (!isMenuIDExist(arrayListMenu, idMenu) || isNumberPlateExist(arrayListMenu, platNomor)) {
+                            newOrder = new Order(idMenu, namaMenu, platNomor, harga, customType);
+                        }
+                    } else if (selectedVehicleType.equals("MOTOR")) {
+                        if (!isMenuIDExist(arrayListMenu, idMenu)
+                                || isNumberPlateExist(arrayListMenu, platNomor)) {
+                            newOrder = new Order(idMenu, namaMenu, platNomor, harga);
+                        }
+                    }
+                    arrayListMenu.add(newOrder);
+                    listMenu.addElement(newOrder);
+                    menuList.setModel(listMenu);
+                    JOptionPane.showMessageDialog(panelCreateMenu,
+                            "CREATE MENU SUCCESS " + idMenu + " " + namaMenu + " " + platNomor);
+                }
+
             }
         });
-        bottomPanel.add(simpanButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -920,8 +984,9 @@ public class FilkomTravel extends JFrame {
                 cardLayout.show(getContentPane(), "Panel2");
             }
         });
-        bottomPanel.add(backButton);
 
+        bottomPanel.add(backButton);
+        bottomPanel.add(createButton);
         panelCreateMenu.add(bottomPanel, BorderLayout.SOUTH);
     }
 

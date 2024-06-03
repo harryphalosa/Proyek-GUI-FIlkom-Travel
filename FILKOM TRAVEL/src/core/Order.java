@@ -1,8 +1,8 @@
 package core;
+
 import core.vehicle.*;
 
 import java.time.LocalDate;
-
 
 public class Order {
     private LocalDate bookingDate;
@@ -11,17 +11,21 @@ public class Order {
     private Vehicle vehicle;
     private String menuID;
     private String menuName;
+    private String string = "";
 
-    public Order(String menuID, String menuName, String numberPlate, int price){
+    public Order(String menuID, String menuName, String numberPlate, int price) {
         this.menuID = menuID;
         this.menuName = menuName;
         this.vehicle = new Motorcycle(numberPlate, price);
+        // jenis kendaran, id, plat, harga
+        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Car";
     }
 
-    public Order(String menuID, String menuName, String numberPlate, int price, String customType){
+    public Order(String menuID, String menuName, String numberPlate, int price, String customType) {
         this.menuID = menuID;
         this.menuName = menuName;
         this.vehicle = new Car(numberPlate, price, customType);
+        string = getMenuID() + " - " + getNumberPlate() + " - " + getPricePerDuration() + " ==> Motorcycle";
     }
 
     public void setDuration(int duration) {
@@ -62,7 +66,7 @@ public class Order {
     }
 
     public String getNumberPlate() {
-        if(vehicle != null){
+        if (vehicle != null) {
             return vehicle.getvehicleNumber();
         }
         return "";
@@ -78,5 +82,10 @@ public class Order {
 
     public LocalDate getEndDate() {
         return bookingDate.plusDays(duration);
+    }
+
+    @Override
+    public String toString() {
+        return this.string;
     }
 }

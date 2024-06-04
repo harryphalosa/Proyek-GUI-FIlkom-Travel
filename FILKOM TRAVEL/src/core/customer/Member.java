@@ -10,10 +10,10 @@ import java.util.HashMap;
 public class Member extends Customer {
     private LocalDate date;
     private String memberName;
-    private double discount;
-    private double cashback;
-    private Promotion promo;
-    private Map<Integer, Promotion> promoHistory = new HashMap<>();
+    public double discount;
+    public double cashback;
+    public Promotion promo;
+    public Map<Integer, Promotion> promoHistory = new HashMap<>();
 
     public Member(String memberID, String memberName, LocalDate date, int memberBalance) {
         super(memberID, memberBalance);

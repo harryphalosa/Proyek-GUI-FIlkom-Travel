@@ -45,11 +45,17 @@ public class FilkomTravel extends JFrame {
     JList<String> guestList = new JList<>(new String[] { "No guests registered yet" });
     JList<String> memberList = new JList<>(new String[] { "No members registered yet" });
     JList<String> promoList = new JList<>(new String[] { "No promo has been registered yet" });
+    JList<String> appliedPromoList = new JList<>(new String[] { "No promos applied yet" });
     JList<String> menuList = new JList<>(new String[] { "No menu has been registered yet" });
     DefaultListModel listMember = new DefaultListModel<>();
     DefaultListModel listGuest = new DefaultListModel<>();
     DefaultListModel listMenu = new DefaultListModel<>();
     DefaultListModel listPromo = new DefaultListModel<>();
+    DefaultListModel<String> promoListModel = new DefaultListModel<>();
+    DefaultListModel<String> appliedPromoListModel = new DefaultListModel<>();
+    JList<String> applyPromoList;
+    JScrollPane promoScrollPane;
+    JScrollPane appliedPromoScrollPane;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -835,6 +841,13 @@ public class FilkomTravel extends JFrame {
                     arrayListPromotion.add(newPromo);
                     listPromo.addElement(newPromo);
                     promoList.setModel(listPromo);
+                    if (promoListModel.contains("No promo has been registered yet")) {
+                        promoListModel.removeElement(promoListModel.firstElement());
+                    }
+                    promoListModel.addElement(newPromo.toString());
+                    applyPromoList = new JList<>(promoListModel);
+                    promoScrollPane = new JScrollPane(applyPromoList);
+
                 } else {
                     if (selectedPromoType.equals("CASHBACK")) {
                         JOptionPane.showMessageDialog(panelCreatePromo,
@@ -1039,10 +1052,13 @@ public class FilkomTravel extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel appliedPromoListLabel = new JLabel("Applied Promo List:");
-        JList<String> appliedPromoList = new JList<>(
-                new String[] { "Applied Promo 1", "Applied Promo 2", "Applied Promo 3" });
-        JScrollPane appliedPromoScrollPane = new JScrollPane(appliedPromoList);
+        JLabel appliedPromoListLabel = new JLabel("Applied Promo List:", SwingConstants.CENTER);
+        appliedPromoListModel.clear();
+        if (appliedPromoListModel.isEmpty()) {
+            appliedPromoListModel.addElement("No promos applied yet");
+        }
+        appliedPromoList = new JList<>(appliedPromoListModel);
+        appliedPromoScrollPane = new JScrollPane(appliedPromoList);
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -1418,30 +1434,47 @@ public class FilkomTravel extends JFrame {
         JTextField idPemesanField = new JTextField();
         JLabel kodePromoLabel = new JLabel("Kode Promo:");
         JTextField kodePromoField = new JTextField();
-        JLabel promoListLabel = new JLabel("Promo List:");
-        JList<String> promoList = new JList<>(new String[] { "Promo 1", "Promo 2", "Promo 3" });
-        JScrollPane promoScrollPane = new JScrollPane(promoList);
+        JLabel promoListLabel = new JLabel("Promo List:", SwingConstants.CENTER);
 
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idPemesanLabel)
-                        .addComponent(kodePromoLabel)
-                        .addComponent(promoListLabel))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idPemesanField)
-                        .addComponent(kodePromoField)
-                        .addComponent(promoScrollPane)));
+        // Populate promo list model with example promo data
+        promoListModel.clear(); // Clear the list first
+        for (Promotion item : arrayListPromotion) {
+            promoListModel.addElement(item.toString());
+        }
+        if (promoListModel.isEmpty()) {
+            promoListModel.addElement("No promo has been registered yet");
+        }
+
+        JList<String> applyPromoList = new JList<>(promoListModel);
+        JScrollPane promoScrollPane = new JScrollPane(applyPromoList);
+
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(promoListLabel)
+                                .addComponent(promoScrollPane, 150, 200, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(idPemesanLabel)
+                                .addComponent(idPemesanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE)
+                                .addComponent(kodePromoLabel)
+                                .addComponent(kodePromoField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE))));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(idPemesanLabel)
-                        .addComponent(idPemesanField))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(kodePromoLabel)
-                        .addComponent(kodePromoField))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(promoListLabel)
-                        .addComponent(promoScrollPane)));
+                        .addComponent(idPemesanLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(promoScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(idPemesanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(kodePromoLabel)
+                                .addComponent(kodePromoField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE))));
 
         panelApplyPromo.add(centerPanel, BorderLayout.CENTER);
 
@@ -1449,23 +1482,100 @@ public class FilkomTravel extends JFrame {
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton applyButton = new JButton("Apply");
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Logic for applying promo
+        applyButton.addActionListener(e -> {
+            String customerID = idPemesanField.getText();
+            String promoCode = kodePromoField.getText();
+
+            if (isCustomerExist(arrayListCustomer, customerID)) {
+                if (isPromoExist(arrayListPromotion, promoCode)) {
+                    Customer customer = getCustomer(arrayListCustomer, customerID);
+                    if (customer instanceof Member) {
+                        Member member = (Member) customer;
+                        arrayListCustomer.remove(member);
+                        // dsds
+                        if (member.isPromoApplied()) {
+                            JOptionPane.showMessageDialog(panelApplyPromo, "APPLY_PROMO FAILED: " + promoCode);
+                            return;
+                        }
+                        for (Promotion promotions : arrayListPromotion) {
+                            if (promotions.getPromoCode().equals(promoCode)) {
+                                if (promotions.isPromoAvailable()) {
+                                    if (promotions.isCustomerEligible(member)) {
+                                        if (promotions instanceof Discount) {
+                                            member.promo = (Discount) promotions;
+                                            member.discount = member.promo.getPercentOff() / 100.0
+                                                    * member.getSubTotal();
+                                            double temp = 0;
+                                            if (member.discount > member.promo.getMaxDiscount()) {
+                                                temp = member.promo.getMaxDiscount();
+                                                member.discount = temp;
+                                            } else {
+                                                temp = member.discount;
+                                            }
+                                            member.setTotalPurchase(member.calculateTotalPurchase());
+                                            Discount tempPromo = (Discount) member.promo;
+                                            member.promoHistory.put(member.getCurrentOrderNumber(), tempPromo);
+                                        } else if (promotions instanceof CashbackPromo) {
+                                            member.promo = (CashbackPromo) promotions;
+                                            member.cashback = member.promo.getPercentOff() / 100.0
+                                                    * member.getSubTotal();
+                                            CashbackPromo tempPromo = (CashbackPromo) member.promo;
+                                            member.promoHistory.put(member.getCurrentOrderNumber(), tempPromo);
+                                        }
+                                        if (appliedPromoListModel.contains("No promos applied yet")) {
+                                            appliedPromoListModel.removeElement(appliedPromoListModel.firstElement());
+                                        }
+                                        appliedPromoListModel
+                                                .addElement("MemberID : " + member.getId() + " ==> " + promoCode);
+                                        appliedPromoList = new JList<>(appliedPromoListModel);
+                                        appliedPromoScrollPane = new JScrollPane(appliedPromoList);
+                                        JOptionPane.showMessageDialog(panelApplyPromo,
+                                                "APPLY_PROMO SUCCESS: " + promoCode);
+                                    } else {
+                                        JOptionPane.showMessageDialog(panelApplyPromo,
+                                                "APPLY_PROMO FAILED: " + promoCode);
+                                    }
+                                    return;
+                                } else {
+                                    JOptionPane.showMessageDialog(panelApplyPromo,
+                                            "APPLY_PROMO FAILED: " + promoCode + " is EXPIRED");
+                                    return;
+                                }
+                            }
+                        }
+                        JOptionPane.showMessageDialog(panelApplyPromo,
+                                "APPLY_PROMO FAILED: " + promoCode);
+
+                        arrayListCustomer.add(member);
+                    } else {
+                        JOptionPane.showMessageDialog(panelApplyPromo,
+                                "APPLY_PROMO FAILED: " + promoCode);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(panelApplyPromo,
+                            "APPLY_PROMO FAILED: " + promoCode);
+                }
+            } else {
+                JOptionPane.showMessageDialog(panelApplyPromo,
+                        "APPLY_PROMO FAILED: " + promoCode);
             }
         });
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
-                cardLayout.show(getContentPane(), "Panel3");
-            }
+        backButton.addActionListener(e -> {
+            CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+            cardLayout.show(getContentPane(), "Panel3");
         });
+
+        JButton nextButton = new JButton("Next");
+        nextButton.addActionListener(e -> {
+            CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+            cardLayout.show(getContentPane(), "PanelCheckOut");
+        });
+
         bottomPanel.add(backButton);
         bottomPanel.add(applyButton);
+        bottomPanel.add(nextButton);
 
         panelApplyPromo.add(bottomPanel, BorderLayout.SOUTH);
     }
